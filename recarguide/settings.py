@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'recarguide.common.apps.CommonConfig',
+    'recarguide.auth.apps.AuthConfig',
     'recarguide.cars.apps.CarsConfig',
     'recarguide.sale.apps.SaleConfig',
 ]

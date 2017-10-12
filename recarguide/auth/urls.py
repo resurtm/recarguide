@@ -3,12 +3,12 @@
 from django.conf.urls import url
 from django.contrib.auth import views
 
-from recarguide.common.forms import AuthenticationForm
+from recarguide.auth import forms as auth_forms
+from recarguide.auth import views as auth_views
 
 urlpatterns = [
-    url(r'^login/$',
-        views.LoginView.as_view(authentication_form=AuthenticationForm),
-        name='login'),
+    url(r'^login/$', views.LoginView.as_view(
+        authentication_form=auth_forms.AuthenticationForm), name='login'),
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
 
     url(r'^password_change/$', views.PasswordChangeView.as_view(),
@@ -26,4 +26,6 @@ urlpatterns = [
         name='password_reset_confirm'),
     url(r'^reset/done/$', views.PasswordResetCompleteView.as_view(),
         name='password_reset_complete'),
+
+    url(r'^signup/$', auth_views.signup, name='signup'),
 ]

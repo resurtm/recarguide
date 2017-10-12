@@ -35,13 +35,23 @@
         </ul>
 
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'auth:login' %}">Sign In</a>
-            </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Hi, <strong>{{ user.username }}</strong>!</a>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#">Create Account</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auth:logout' %}">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auth:login' %}">Sign In</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Create Account</a>
+                </li>
+            {% endif %}
         </ul>
 
         {% comment %}<form class="form-inline my-2 my-lg-0">
