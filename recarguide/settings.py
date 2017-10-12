@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 
     'recarguide.common.apps.CommonConfig',
     'recarguide.cars.apps.CarsConfig',
+    'recarguide.sale.apps.SaleConfig',
 ]
 
 MIDDLEWARE = [
