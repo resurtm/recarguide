@@ -7,3 +7,6 @@ __pycache/
 /dist/
 db.sqlite3
 /recarguide/settings_local.py
+/node_modules/
+/recarguide/common/static/bundle/*
+!/recarguide/common/static/bundle/.gitkeep
