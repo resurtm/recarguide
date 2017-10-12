@@ -6,3 +6,4 @@ __pycache/
 /build/
 /dist/
 db.sqlite3
+/recarguide/settings_local.py
