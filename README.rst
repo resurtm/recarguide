@@ -1,4 +1,5 @@
 ReCarGuide - Car Guide Application
 ==================================
 
-TBD
+| https://github.com/resurtm/recarguide
+| https://pypi.python.org/pypi/recarguide

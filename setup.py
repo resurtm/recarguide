@@ -12,6 +12,7 @@ setup(
     description='ReCarGuide - Car Guide Application',
     long_description=readme(),
     url='https://github.com/resurtm/recarguide',
+    download_url='https://github.com/resurtm/recarguide/archive/v0.0.1.tar.gz',
     author='resurtm',
     author_email='resurtm@gmail.com',
     license='MIT',
