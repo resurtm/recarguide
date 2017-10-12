@@ -61,12 +61,11 @@ def pre_save_model_receiver(instance, *args, **kwargs):
 
 
 def pre_save_car_receiver(instance, *args, **kwargs):
-    instance.slug = slugify(instance.name)
-
     tpl = '{make} {model} {year}'
     instance.name = tpl.format(make=instance.make.name,
                                model=instance.model.name,
                                year=instance.year)
+    instance.slug = slugify(instance.name)
 
 
 pre_save.connect(pre_save_category_receiver, sender=Category)
