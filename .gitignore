@@ -5,3 +5,4 @@
 __pycache/
 /build/
 /dist/
+db.sqlite3
