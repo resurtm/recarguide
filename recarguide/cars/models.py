@@ -48,23 +48,25 @@ class Car(models.Model):
         return '{name} {slug}'.format(name=self.name, slug=self.slug)
 
 
-def pre_save_category_receiver(instance):
+def pre_save_category_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
 
 
-def pre_save_make_receiver(instance):
+def pre_save_make_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
 
 
-def pre_save_model_receiver(instance):
+def pre_save_model_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
 
 
-def pre_save_car_receiver(instance):
+def pre_save_car_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
-    instance.name = '{make} {model} {year}'.format(make=instance.make.name,
-                                                   model=instance.model.name,
-                                                   year=instance.year)
+
+    tpl = '{make} {model} {year}'
+    instance.name = tpl.format(make=instance.make.name,
+                               model=instance.model.name,
+                               year=instance.year)
 
 
 pre_save.connect(pre_save_category_receiver, sender=Category)
