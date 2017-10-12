@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'recarguide.common.apps.CommonConfig',
+    'recarguide.cars.apps.CarsConfig',
 ]
 
 MIDDLEWARE = [
