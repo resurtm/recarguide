@@ -8,11 +8,11 @@ def readme():
 
 setup(
     name='recarguide',
-    version='0.0.1',
+    version='0.0.2',
     description='ReCarGuide - Car Guide Application',
     long_description=readme(),
     url='https://github.com/resurtm/recarguide',
-    download_url='https://github.com/resurtm/recarguide/archive/v0.0.1.tar.gz',
+    download_url='https://github.com/resurtm/recarguide/archive/v0.0.2.tar.gz',
     author='resurtm',
     author_email='resurtm@gmail.com',
     license='MIT',
