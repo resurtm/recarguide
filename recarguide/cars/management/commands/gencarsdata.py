@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.db import connection
 
 from recarguide.cars.models import Category, Make, Model, Car
 
@@ -55,11 +56,15 @@ class Command(BaseCommand):
             return
 
         self.stdout.write('Generating testing cars data...')
+
         self.__remove_old_data()
+        self.__reset_sequences()
+
         self.__generate_categories()
         self.__generate_makes()
         self.__generate_models()
         self.__generate_cars()
+
         self.stdout.write(self.style.SUCCESS('Done!'))
 
     def __remove_old_data(self):
@@ -67,6 +72,14 @@ class Command(BaseCommand):
         Category.objects.all().delete()
         Model.objects.all().delete()
         Make.objects.all().delete()
+
+    def __reset_sequences(self):
+        if connection.vendor == 'postgresql':
+            with connection.cursor() as cursor:
+                cursor.execute('ALTER SEQUENCE cars_car_id_seq RESTART')
+                cursor.execute('ALTER SEQUENCE cars_category_id_seq RESTART')
+                cursor.execute('ALTER SEQUENCE cars_make_id_seq RESTART')
+                cursor.execute('ALTER SEQUENCE cars_model_id_seq RESTART')
 
     def __generate_categories(self):
         for name, children in self.__CATEGORIES:
