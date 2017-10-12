@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^cars/', include('recarguide.cars.urls', namespace='cars')),
+    url(r'^', include('recarguide.common.auth_urls', namespace='auth')),
     url(r'^admin/', admin.site.urls),
 ]
