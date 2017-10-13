@@ -33,7 +33,7 @@ class Model(models.Model):
 
 
 class Car(models.Model):
-    name = models.SlugField(max_length=250, default='')
+    name = models.CharField(max_length=250, default='')
     slug = models.SlugField(max_length=250, default='')
 
     make = models.ForeignKey('Make', on_delete=models.PROTECT, default=None)

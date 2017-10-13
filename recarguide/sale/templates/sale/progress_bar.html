@@ -1,0 +1,35 @@
+<div id="progress-bar" class="mt-5 mb-5">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Step #{{ step }}</h4>
+
+            {% if step == 1 %}
+                <h6 class="card-subtitle mb-2 text-muted">Select an appropriate package plan</h6>
+                <p class="card-text">Please make a choose of the plan which would fit the best to your listing</p>
+            {% endif %}
+
+            {% if step == 2 %}
+                <h6 class="card-subtitle mb-2 text-muted">Fill details about your car</h6>
+                <p class="card-text">Make sure you have specified as much as possible and precise details</p>
+            {% endif %}
+
+            {% if step == 3 %}
+                <h6 class="card-subtitle mb-2 text-muted">Make your payment now</h6>
+                <p class="card-text">Please make a payment for your listing in order to publish it</p>
+            {% endif %}
+
+            {% if step == 4 %}
+                <h6 class="card-subtitle mb-2 text-muted">Woo-hoo!</h6>
+                <p class="card-text">Your listing has been successfully published! ;-)</p>
+            {% endif %}
+
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped" role="progressbar"
+                     style="width: {{ bar_percent }}%;" aria-valuenow="{{ bar_percent }}" aria-valuemin="0"
+                     aria-valuemax="100">
+                    <strong>Step #{{ step }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
