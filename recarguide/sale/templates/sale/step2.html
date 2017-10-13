@@ -5,9 +5,69 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-10 mr-auto ml-auto">
-
             {% progress_bar 2 %}
 
+            <form action="{% url 'sale:step2' %}" method="post" id="listing-form">
+                {% csrf_token %}
+
+                <div class="form-group row">
+                    <label for="listing-form-year" class="col-sm-4 col-form-label">Year</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="listing-form-year">
+                            <option value=""></option>
+                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2015">2015</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="listing-form-make" class="col-sm-4 col-form-label">Make/Manufacturer</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="listing-form-make" placeholder="Toyota">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="listing-form-model" class="col-sm-4 col-form-label">Model</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="listing-form-model" placeholder="Camry XV40"
+                               readonly>
+                    </div>
+                </div>
+
+                <hr class="mt-4 mb-4">
+
+                <div class="form-group row">
+                    <label for="listing-form-category" class="col-sm-4 col-form-label">Category</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="listing-form-category">
+                            <option value=""></option>
+                            <option value="test">Test</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="listing-form-subcategory" class="col-sm-4 col-form-label">Subcategory</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="listing-form-subcategory">
+                            <option value=""></option>
+                            <option value="test2">Test2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr class="mt-4 mb-4">
+
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-8">
+                        <button type="submit" class="btn btn-danger btn-lg pl-5 pr-5">Next</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
