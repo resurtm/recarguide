@@ -27,6 +27,10 @@ class SellProcess(models.Model):
     car = models.ForeignKey(Car, on_delete=models.PROTECT, null=True,
                             default=None)
 
+    step = models.PositiveSmallIntegerField(default=1)
+    package_plan = models.ForeignKey('PackagePlan', on_delete=models.PROTECT,
+                                     null=True, default=None)
+
 
 def pre_save_package_plan_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
