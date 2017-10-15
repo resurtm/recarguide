@@ -1,0 +1,83 @@
+{% load widget_tweaks %}
+
+<form action="{% url 'sale:step2' %}" method="post" id="listing-form">
+    {% csrf_token %}
+
+    {% with WIDGET_ERROR_CLASS='is-invalid' %}
+
+        <div class="form-group row">
+            <label for="{{ form.year.auto_id }}" class="col-sm-3 col-form-label">{{ form.year.label }}</label>
+            <div class="col-sm-9">
+                {% render_field form.year class+='form-control' %}
+                {% include 'partials/field-errors.html' with errors=form.year.errors %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="{{ form.make.auto_id }}" class="col-sm-3 col-form-label">{{ form.make.label }}</label>
+            <div class="col-sm-9">
+                {% render_field form.make class+='form-control' %}
+                {% include 'partials/field-errors.html' with errors=form.make.errors %}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="{{ form.model.auto_id }}"
+                   class="col-sm-3 col-form-label">{{ form.model.label }}</label>
+            <div class="col-sm-9">
+                {% render_field form.model class+='form-control' disabled='disabled' %}
+                {% include 'partials/field-errors.html' with errors=form.model.errors %}
+            </div>
+        </div>
+
+        <hr class="mt-4 mb-4">
+
+        <div class="form-group row">
+            <label for="{{ form.category.auto_id }}"
+                   class="col-sm-3 col-form-label">{{ form.category.label }}</label>
+            <div class="col-sm-9">
+                {% render_field form.category class+='form-control' %}
+                {% include 'partials/field-errors.html' with errors=form.category.errors %}
+            </div>
+        </div>
+        <div class="form-group row d-none">
+            <label for="{{ form.subcategory.auto_id }}"
+                   class="col-sm-3 col-form-label">{{ form.subcategory.label }}</label>
+            <div class="col-sm-9">
+                {% render_field form.subcategory class+='form-control' disabled='disabled' %}
+                {% include 'partials/field-errors.html' with errors=form.subcategory.errors %}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="listing-form-price" class="col-sm-3 col-form-label">Price</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="listing-form-price" placeholder="12500">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="listing-form-price" class="col-sm-3 col-form-mileage">Mileage</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="listing-form-mileage" placeholder="42250">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="listing-form-price" class="col-sm-3 col-form-description">Description</label>
+            <div class="col-sm-7">
+                        <textarea class="form-control" id="col-form-description" rows="5"
+                                  placeholder="Good condition, etc."></textarea>
+            </div>
+        </div>
+
+        <hr class="mt-4 mb-4">
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-9">
+                <button type="submit" class="btn btn-danger btn-lg pl-5 pr-5">Next</button>
+            </div>
+        </div>
+
+    {% endwith %}
+</form>

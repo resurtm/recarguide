@@ -1,5 +1,7 @@
 require('bootstrap-loader');
 require('../sass/main.scss');
 
+require('./utils');
 require('./package-selector');
-require('./car-sale-form');
+require('./sale-make-model-fields');
+require('./sale-category-fields');

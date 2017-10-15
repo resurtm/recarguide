@@ -1,26 +1,17 @@
 jQuery(function ($) {
-  var form = $('#listing-form');
+  var form = $('#package-plan-selector-form');
   if (form.length === 0) {
     return;
   }
 
-  var makeInput = form.find('#id_make');
-  var modelInput = form.find('#id_model');
+  var idField = form.find('[name=package_plan_id]');
 
-  makeInput.on('change', function () {
-    $.ajax({
-      url: '/sale/fetch-models/' + $(this).val() + '/',
-      success: function (data) {
-        modelInput
-          .html('<option value=""></option>')
-          .prop('disabled', Object.keys(data).length === 0);
+  form.on('click', 'button', function () {
+    idField.val($(this).data('id'));
+    form.submit();
+  });
 
-        $.each(data, function (index, text) {
-          modelInput.append($('<option></option>').val(index).html(text));
-        });
-      }
-    });
-
-    return false;
+  form.on('submit', function (e) {
+    return idField.val().length > 0;
   });
 });

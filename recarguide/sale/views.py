@@ -3,7 +3,7 @@ from django.core.exceptions import SuspiciousOperation
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
-from recarguide.cars.models import Model
+from recarguide.cars.models import Model, Category
 from recarguide.sale.forms import CarSaleForm
 from recarguide.sale.models import PackagePlan
 from recarguide.sale.utils import ensure_sell_process
@@ -35,7 +35,12 @@ def step1(request, process):
 @login_required
 @ensure_sell_process(step=2)
 def step2(request, process):
-    form = CarSaleForm()
+    if request.method == 'POST':
+        form = CarSaleForm(request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = CarSaleForm()
     return render(request, 'sale/step2.html', {'form': form})
 
 
@@ -45,5 +50,15 @@ def fetch_models(request, process, make_id):
     models = Model.objects.filter(make_id=make_id)
     result = {}
     for model in models:
-        result[model.id] = model.name
+        result[model.pk] = model.name
+    return JsonResponse(result)
+
+
+@login_required
+@ensure_sell_process(step=2)
+def fetch_categories(request, process, category_id):
+    models = Category.objects.filter(parent_id=category_id)
+    result = {}
+    for model in models:
+        result[model.pk] = model.name
     return JsonResponse(result)

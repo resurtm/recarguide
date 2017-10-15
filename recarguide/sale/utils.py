@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import redirect
 
 from recarguide.sale.models import SellProcess
@@ -14,3 +16,11 @@ def ensure_sell_process(step):
         return dec2
 
     return dec1
+
+
+def years_choices(include_empty=True):
+    year = datetime.datetime.now().year
+    choices = [(i, i) for i in range(year, 1900, -1)]
+    if include_empty:
+        choices.insert(0, (None, ''))
+    return choices
