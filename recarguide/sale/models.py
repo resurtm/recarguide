@@ -5,6 +5,11 @@ from django.utils.text import slugify
 
 from recarguide.cars.models import Car
 
+CONTACT_METHODS = (
+    ('e', 'Email Only'),
+    ('p', 'Email & Phone'),
+)
+
 
 class PackagePlan(models.Model):
     name = models.CharField(max_length=50, default='')
@@ -30,6 +35,22 @@ class SellProcess(models.Model):
     step = models.PositiveSmallIntegerField(default=1)
     package_plan = models.ForeignKey('PackagePlan', on_delete=models.PROTECT,
                                      null=True, default=None)
+
+
+class Contact(models.Model):
+    sell_process = models.ForeignKey('SellProcess', on_delete=models.PROTECT,
+                                     default=None)
+
+    first_name = models.CharField(max_length=50, default='')
+    last_name = models.CharField(max_length=50, default='')
+
+    address = models.CharField(max_length=75, default='')
+    address2 = models.CharField(max_length=75, default='')
+    city = models.CharField(max_length=75, default='')
+    country = models.CharField(max_length=2, default='')
+    phone = models.CharField(max_length=25, default='')
+
+    contact_method = models.CharField(max_length=1, default='')
 
 
 def pre_save_package_plan_receiver(instance, *args, **kwargs):

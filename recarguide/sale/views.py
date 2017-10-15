@@ -37,14 +37,19 @@ def step2(request, process):
         form = CarSaleForm(request.POST)
         if form.is_valid():
             with transaction.atomic():
-                form.save()
+                process.car = form.save()
                 process.step = 3
                 process.save()
             return redirect('sale:step3')
     else:
         form = CarSaleForm()
-
     return render(request, 'sale/step2.html', {'form': form})
+
+
+@login_required
+@ensure_sell_process(step=3)
+def step3(request, process):
+    return render(request, 'sale/step3.html')
 
 
 @login_required
