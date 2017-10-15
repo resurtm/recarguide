@@ -43,6 +43,9 @@ class Car(models.Model):
 
     price = models.PositiveIntegerField(default=0)
     year = models.PositiveSmallIntegerField(default=0)
+    mileage = models.PositiveIntegerField(default=0)
+
+    description = models.TextField(max_length=10000, default='')
 
     def __str__(self):
         return '{name} {slug}'.format(name=self.name, slug=self.slug)

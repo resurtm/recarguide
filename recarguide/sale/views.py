@@ -1,7 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import SuspiciousOperation
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
+from recarguide.cars.models import Model
+from recarguide.sale.forms import CarSaleForm
 from recarguide.sale.models import PackagePlan
 from recarguide.sale.utils import ensure_sell_process
 
@@ -32,4 +35,15 @@ def step1(request, process):
 @login_required
 @ensure_sell_process(step=2)
 def step2(request, process):
-    return render(request, 'sale/step2.html')
+    form = CarSaleForm()
+    return render(request, 'sale/step2.html', {'form': form})
+
+
+@login_required
+@ensure_sell_process(step=2)
+def fetch_models(request, process, make_id):
+    models = Model.objects.filter(make_id=make_id)
+    result = {}
+    for model in models:
+        result[model.id] = model.name
+    return JsonResponse(result)

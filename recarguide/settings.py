@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'widget_tweaks',
+
     'recarguide.common.apps.CommonConfig',
     'recarguide.auth.apps.AuthConfig',
     'recarguide.cars.apps.CarsConfig',
