@@ -48,6 +48,7 @@ class Contact(models.Model):
     address2 = models.CharField(max_length=75, default='')
     city = models.CharField(max_length=75, default='')
     country = models.CharField(max_length=2, default='')
+    zip = models.CharField(max_length=10, default='')
     phone = models.CharField(max_length=25, default='')
 
     contact_method = models.CharField(max_length=1, default='')

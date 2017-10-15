@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from recarguide.cars.models import Model, Category
-from recarguide.sale.forms import CarSaleForm
+from recarguide.sale.forms import CarSaleForm, SaleContactForm
 from recarguide.sale.models import PackagePlan
 from recarguide.sale.utils import ensure_sell_process
 
@@ -49,7 +49,8 @@ def step2(request, process):
 @login_required
 @ensure_sell_process(step=3)
 def step3(request, process):
-    return render(request, 'sale/step3.html')
+    form = SaleContactForm()
+    return render(request, 'sale/step3.html', {'form': form})
 
 
 @login_required
