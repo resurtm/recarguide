@@ -50,3 +50,13 @@ class CarSaleForm(ModelForm):
             self.fields['subcategory'].queryset = qs
         if len(self.fields['subcategory'].choices) == 0:
             self.fields['subcategory'].required = False
+
+    def save(self, *args, **kwargs):
+        self.instance.year = int(self.cleaned_data['year'])
+        self.instance.make = self.cleaned_data['make']
+        self.instance.model = self.cleaned_data['model']
+        if 'subcategory' in self.cleaned_data:
+            self.instance.category = self.cleaned_data['subcategory']
+        else:
+            self.instance.category = self.cleaned_data['category']
+        return super(CarSaleForm, self).save(*args, **kwargs)
