@@ -81,13 +81,15 @@ def step4(request, process):
         process.payment = resp
         process.step = 5
         process.save()
-        return redirect('sale:step5')
+        return redirect('sale:step4')
     return render(request, 'sale/step4.html', {'process': process})
 
 
 @login_required
 @ensure_sell_process(step=5)
 def step5(request, process):
+    process.finished = True
+    process.save()
     return render(request, 'sale/step5.html')
 
 

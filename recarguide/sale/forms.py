@@ -1,9 +1,18 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ModelForm, ModelChoiceField, ChoiceField
 
 from recarguide.cars.models import Car, Make, Model, Category
 from recarguide.common.countries import get_countries
 from recarguide.sale.models import Contact
 from recarguide.sale.utils import years_choices
+
+
+def rel_or_none(instance, attr):
+    try:
+        res = getattr(instance, attr)
+    except ObjectDoesNotExist:
+        res = None
+    return res
 
 
 class CarSaleForm(ModelForm):
@@ -35,17 +44,26 @@ class CarSaleForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CarSaleForm, self).__init__(*args, **kwargs)
 
-        if len(self.data) == 0:
-            self.__setup_model_field(self.instance.make.id)
-            self.fields['make'].initial = self.instance.make
-            self.fields['model'].initial = self.instance.model
-            if self.instance.category.parent is None:
-                self.fields['category'].initial = self.instance.category
+        make = rel_or_none(self.instance, 'make')
+        model = rel_or_none(self.instance, 'model')
+        if len(self.data) == 0 and make is not None and model is not None:
+            self.__setup_model_field(make)
+            self.fields['make'].initial = make
+            self.fields['model'].initial = model
+
+        category = rel_or_none(self.instance, 'category')
+        if len(self.data) == 0 and category is not None:
+            if category.parent is None:
+                self.fields['category'].initial = category
                 self.fields['subcategory'].initial = None
             else:
-                self.__setup_subcategory_field(self.instance.category.parent.id)
-                self.fields['category'].initial = self.instance.category.parent
-                self.fields['subcategory'].initial = self.instance.category
+                self.__setup_subcategory_field(category.parent.id)
+                self.fields['category'].initial = category.parent
+                self.fields['subcategory'].initial = category
+
+        if len(self.data) == 0:
+            self.fields['price'].initial = None
+            self.fields['mileage'].initial = None
 
         if 'make' in self.data and len(self.data['make']) > 0:
             self.__setup_model_field(int(self.data['make']))
