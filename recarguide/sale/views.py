@@ -35,7 +35,7 @@ def step1(request, process):
 @ensure_sell_process(step=2)
 def step2(request, process):
     if request.method == 'POST':
-        form = CarSaleForm(request.POST)
+        form = CarSaleForm(request.POST, instance=process.car)
         if form.is_valid():
             with transaction.atomic():
                 process.car = form.save()
@@ -51,7 +51,7 @@ def step2(request, process):
 @ensure_sell_process(step=3)
 def step3(request, process):
     if request.method == 'POST':
-        form = SaleContactForm(request.POST)
+        form = SaleContactForm(request.POST, instance=process.contacts.first())
         if form.is_valid():
             with transaction.atomic():
                 form.instance.sell_process = process
@@ -60,7 +60,7 @@ def step3(request, process):
                 process.save()
             return redirect('sale:step4')
     else:
-        form = SaleContactForm()
+        form = SaleContactForm(instance=process.contacts.first())
     return render(request, 'sale/step3.html', {'form': form})
 
 

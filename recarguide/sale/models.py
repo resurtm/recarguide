@@ -41,7 +41,7 @@ class SellProcess(models.Model):
 
 class Contact(models.Model):
     sell_process = models.ForeignKey('SellProcess', on_delete=models.PROTECT,
-                                     default=None)
+                                     default=None, related_name='contacts')
 
     first_name = models.CharField(max_length=50, default='')
     last_name = models.CharField(max_length=50, default='')

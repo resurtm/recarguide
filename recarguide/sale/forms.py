@@ -95,5 +95,10 @@ class SaleContactForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SaleContactForm, self).__init__(*args, **kwargs)
-
+        if len(self.data) == 0:
+            self.fields['country'].initial = self.instance.country
         self.fields['address2'].required = False
+
+    def save(self, *args, **kwargs):
+        self.instance.country = self.cleaned_data['country']
+        return super(SaleContactForm, self).save(*args, **kwargs)

@@ -77,7 +77,8 @@
                 <div class="form-check mb-4">
                     <label class="form-check-label">
                         <input class="form-check-input" type="radio" name="{{ form.contact_method.name }}"
-                               id="{{ form.contact_method.auto_id }}_e" value="e" checked>
+                               id="{{ form.contact_method.auto_id }}_e"
+                               value="e" {% if form.contact_method.initial == 'e' %}checked{% endif %}>
                         <strong>Email Only</strong> (Recommended)<br>
                         Buyers will contact you via contact form.<br>
                         Your email address will be hidden.
@@ -87,7 +88,8 @@
                 <div class="form-check mt-4">
                     <label class="form-check-label">
                         <input class="form-check-input" type="radio" name="{{ form.contact_method.name }}"
-                               id="{{ form.contact_method.auto_id }}_p" value="p">
+                               id="{{ form.contact_method.auto_id }}_p"
+                               value="p" {% if form.contact_method.initial == 'p' %}checked{% endif %}>
                         <strong>Email and Phone</strong><br>
                         Buyers will contact you via contact form.<br>
                         In addition, your phone number will be displayed on your ad.
@@ -95,7 +97,6 @@
                 </div>
             </div>
         </div>
-
 
         {% include 'sale/action-buttons.html' %}
 
