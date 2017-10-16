@@ -1,4 +1,5 @@
 require('bootstrap-loader');
+require('font-awesome/scss/font-awesome.scss');
 require('../sass/main.scss');
 
 require('./utils');

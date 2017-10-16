@@ -1,5 +1,5 @@
 # id, name
-countries = (
+countries = [
     (1, 'Afghanistan'),
     (2, 'Aland Islands'),
     (3, 'Albania'),
@@ -236,10 +236,10 @@ countries = (
     (234, 'Yemen'),
     (235, 'Zambia'),
     (236, 'Zimbabwe'),
-)
+]
 
 # id, name, code, isd, currency code, currency symbol
-full_countries = (
+full_countries = [
     (1, 'Afghanistan', 'AF', '93', 'AFN', '&#1547;'),
     (2, 'Aland Islands', 'AX', '358', 'EUR', '&#8364;'),
     (3, 'Albania', 'AL', '355', 'ALL', '&#76;&#101;&#107;'),
@@ -351,7 +351,8 @@ full_countries = (
     (109, 'Kazakhstan', 'KZ', '7', 'KZT', '&#1083;&#1074;'),
     (110, 'Kenya', 'KE', '254', 'KES', 'Sh'),
     (111, 'Kiribati', 'KI', '686', 'AUD', '&#36;'),
-    (112, 'Korea, Democratic People\'s Republic of', 'KP', '850', 'KPW', '&#8361;'),
+    (112, 'Korea, Democratic People\'s Republic of', 'KP', '850', 'KPW',
+     '&#8361;'),
     (113, 'Korea, Republic of', 'KR', '82', 'KRW', '&#8361;'),
     (114, 'Kuwait', 'KW', '965', 'KWD', 'د.ك'),
     (115, 'Kyrgyzstan', 'KG', '996', 'KGS', '&#1083;&#1074;'),
@@ -476,4 +477,11 @@ full_countries = (
     (234, 'Yemen', 'YE', '967', 'YER', '&#65020;'),
     (235, 'Zambia', 'ZM', '260', 'ZMK', 'ZK'),
     (236, 'Zimbabwe', 'ZW', '263', 'ZWL', '&#36;'),
-)
+]
+
+
+def get_countries(include_empty=True):
+    result = list(countries)
+    if include_empty:
+        result.insert(0, (None, ""))
+    return result

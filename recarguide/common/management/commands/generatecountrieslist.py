@@ -28,16 +28,22 @@ class Command(BaseCommand):
         pat1 = "    ({idx}, '{name}'),\n"
         pat2 = "    ({idx}, '{name}', '{code}', '{isd}', '{c1}', '{c2}'),\n"
 
+        countries_fn = ('def get_countries(include_empty=True):\n'
+                        '    result = list(countries)\n'
+                        '    if include_empty:\n'
+                        '        result.insert(0, (None, ""))\n'
+                        '    return result\n')
+
         with open(out_path, 'w') as fp:
             fp.write('# id, name\n')
-            fp.write('countries = (\n')
+            fp.write('countries = [\n')
             for idx, country in enumerate(countries):
                 name = country[0].replace("'", r"\'")
                 fp.write(pat1.format(idx=idx + 1, name=name))
-            fp.write(')\n\n')
+            fp.write(']\n\n')
 
             fp.write('# id, name, code, isd, currency code, currency symbol\n')
-            fp.write('full_countries = (\n')
+            fp.write('full_countries = [\n')
             for idx, country in enumerate(countries):
                 name = country[0].replace("'", r"\'")
                 code = country[1].replace("'", r"\'")
@@ -46,6 +52,7 @@ class Command(BaseCommand):
                 c2 = country[4].replace("'", r"\'")
                 fp.write(pat2.format(idx=idx + 1, name=name, code=code, isd=isd,
                                      c1=c1, c2=c2))
-            fp.write(')\n')
+            fp.write(']\n\n\n')
+            fp.write(countries_fn)
 
         self.stdout.write(self.style.SUCCESS('Done!'))

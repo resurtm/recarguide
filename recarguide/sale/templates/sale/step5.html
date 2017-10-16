@@ -1,0 +1,11 @@
+{% extends 'common/layout/main.html' %}
+
+{% load sale %}
+
+{% block content %}
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-10 mr-auto ml-auto">
+            {% progress_bar 5 %}
+        </div>
+    </div>
+{% endblock %}

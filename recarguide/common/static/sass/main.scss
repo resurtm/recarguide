@@ -40,4 +40,27 @@
       bottom: 35px;
     }
   }
+
+  .package-plan-badge {
+    position: absolute;
+    z-index: 100;
+    right: 50px;
+    top: -15px;
+    font-size: 64px;
+    .fa {
+      transform: rotate(-30deg);
+      position: absolute;
+    }
+    .fa-certificate {
+      color: red;
+      top: 0;
+      left: 0;
+    }
+    .fa-thumbs-up {
+      color: white;
+      font-size: 24px;
+      top: 18px;
+      left: 16px;
+    }
+  }
 }

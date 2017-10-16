@@ -1,7 +1,7 @@
 from django.forms import ModelForm, ModelChoiceField, ChoiceField
 
 from recarguide.cars.models import Car, Make, Model, Category
-from recarguide.common.countries import countries
+from recarguide.common.countries import get_countries
 from recarguide.sale.models import Contact
 from recarguide.sale.utils import years_choices
 
@@ -65,7 +65,7 @@ class CarSaleForm(ModelForm):
 
 
 class SaleContactForm(ModelForm):
-    country = ChoiceField(choices=countries)
+    country = ChoiceField(choices=get_countries())
 
     class Meta:
         model = Contact
@@ -73,4 +73,10 @@ class SaleContactForm(ModelForm):
                   'phone', 'contact_method', 'zip']
         labels = {
             'address2': 'Address (additional)',
+            'contact_method': 'Contact Method',
         }
+
+    def __init__(self, *args, **kwargs):
+        super(SaleContactForm, self).__init__(*args, **kwargs)
+
+        self.fields['address2'].required = False

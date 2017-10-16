@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form action="{% url 'sale:step2' %}" method="post" id="listing-form">
+<form action="{% url 'sale:step3' %}" method="post" id="listing-form">
     {% csrf_token %}
 
     {% with WIDGET_ERROR_CLASS='is-invalid' %}
@@ -69,13 +69,15 @@
         <hr class="mt-4 mb-4">
 
         <div class="row">
-            <div class="col-sm-3"></div>
+            <label for="{{ form.contact_method.auto_id }}" class="col-sm-3 col-form-label">
+                {{ form.contact_method.label }}
+            </label>
 
             <div class="col-sm-8">
                 <div class="form-check mb-4">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="{{ form.phone.name }}"
-                               id="{{ form.phone.auto_id }}_e" value="e" checked>
+                        <input class="form-check-input" type="radio" name="{{ form.contact_method.name }}"
+                               id="{{ form.contact_method.auto_id }}_e" value="e" checked>
                         <strong>Email Only</strong> (Recommended)<br>
                         Buyers will contact you via contact form.<br>
                         Your email address will be hidden.
@@ -84,8 +86,8 @@
 
                 <div class="form-check mt-4">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="{{ form.phone.name }}"
-                               id="{{ form.phone.auto_id }}_p" value="p">
+                        <input class="form-check-input" type="radio" name="{{ form.contact_method.name }}"
+                               id="{{ form.contact_method.auto_id }}_p" value="p">
                         <strong>Email and Phone</strong><br>
                         Buyers will contact you via contact form.<br>
                         In addition, your phone number will be displayed on your ad.

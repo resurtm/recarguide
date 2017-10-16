@@ -36,6 +36,8 @@ class SellProcess(models.Model):
     package_plan = models.ForeignKey('PackagePlan', on_delete=models.PROTECT,
                                      null=True, default=None)
 
+    finished = models.BooleanField(default=False)
+
 
 class Contact(models.Model):
     sell_process = models.ForeignKey('SellProcess', on_delete=models.PROTECT,

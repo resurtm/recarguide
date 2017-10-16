@@ -17,6 +17,12 @@ const config = {
         })
       },
       {
+        test: /\.(png|svg|gif|jpg|jpeg|woff|woff2|eot|ttf)$/,
+        use: [{
+          loader: 'url-loader?limit=4000'
+        }]
+      },
+      {
         test: /bootstrap[\/\\]dist[\/\\]js[\/\\]umd[\/\\]/,
         use: [{
           loader: 'imports-loader?jQuery=jquery'

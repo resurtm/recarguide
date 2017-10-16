@@ -27,7 +27,8 @@ def step1(request, process):
         process.save()
         return redirect('sale:step2')
     plans = PackagePlan.objects.order_by('order').all()
-    return render(request, 'sale/step1.html', {'plans': plans})
+    return render(request, 'sale/step1.html', {'plans': plans,
+                                               'process': process})
 
 
 @login_required
@@ -49,13 +50,34 @@ def step2(request, process):
 @login_required
 @ensure_sell_process(step=3)
 def step3(request, process):
-    form = SaleContactForm()
+    if request.method == 'POST':
+        form = SaleContactForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                form.instance.sell_process = process
+                form.save()
+                process.step = 4
+                process.save()
+            return redirect('sale:step4')
+    else:
+        form = SaleContactForm()
     return render(request, 'sale/step3.html', {'form': form})
 
 
 @login_required
-@ensure_sell_process(step=2)
-def fetch_models(request, process, make_id):
+@ensure_sell_process(step=4)
+def step4(request, process):
+    return render(request, 'sale/step4.html')
+
+
+@login_required
+@ensure_sell_process(step=5)
+def step5(request, process):
+    return render(request, 'sale/step5.html')
+
+
+@login_required
+def fetch_models(request, make_id):
     models = Model.objects.filter(make_id=make_id)
     result = {}
     for model in models:
@@ -64,8 +86,7 @@ def fetch_models(request, process, make_id):
 
 
 @login_required
-@ensure_sell_process(step=2)
-def fetch_categories(request, process, category_id):
+def fetch_categories(request, category_id):
     models = Category.objects.filter(parent_id=category_id)
     result = {}
     for model in models:

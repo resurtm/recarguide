@@ -8,8 +8,13 @@ from recarguide.sale.models import SellProcess
 def ensure_sell_process(step):
     def dec1(func):
         def dec2(request, *args, **kwargs):
-            sp, __ = SellProcess.objects.get_or_create(user_id=request.user.id)
-            if sp.step != step:
+            try:
+                sp = SellProcess.objects.filter(user_id=request.user.id,
+                                                finished=False).get()
+            except SellProcess.DoesNotExist:
+                sp = SellProcess(user_id=request.user.id)
+                sp.save()
+            if sp.step < step:
                 return redirect('sale:step{}'.format(sp.step))
             return func(request, sp, *args, **kwargs)
 
