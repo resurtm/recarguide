@@ -16,3 +16,8 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+STRIPE = {
+    'PUBLISHABLE_KEY': 'pk_test_XXXXXX',
+    'SECRET_KEY': 'sk_test_XXXXXX',
+}
