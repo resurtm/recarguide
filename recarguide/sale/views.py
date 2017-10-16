@@ -43,7 +43,7 @@ def step2(request, process):
                 process.save()
             return redirect('sale:step3')
     else:
-        form = CarSaleForm()
+        form = CarSaleForm(instance=process.car)
     return render(request, 'sale/step2.html', {'form': form})
 
 

@@ -7,7 +7,7 @@ jQuery(function ($) {
   var makeInput = form.find('#id_make');
   var modelInput = form.find('#id_model');
 
-  if (makeInput.val().length > 0 && modelInput.find('option').length > 0) {
+  if (makeInput.val().length > 0 && modelInput.find('option[value!=""]').length > 0) {
     modelInput.prop('disabled', false);
   }
 

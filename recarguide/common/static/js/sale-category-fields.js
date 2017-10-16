@@ -8,7 +8,7 @@ jQuery(function ($) {
   var subInput = form.find('#id_subcategory');
   var subWrap = subInput.closest('.form-group');
 
-  if (catInput.val().length > 0 && subInput.find('option').length > 0) {
+  if (catInput.val().length > 0 && subInput.find('option[value!=""]').length > 0) {
     subInput.prop('disabled', false);
     subWrap.removeClass('d-none');
   }
