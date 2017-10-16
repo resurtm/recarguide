@@ -1,3 +1,5 @@
+import stripe
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import SuspiciousOperation
 from django.db import transaction
@@ -7,7 +9,7 @@ from django.shortcuts import render, redirect
 from recarguide.cars.models import Model, Category
 from recarguide.sale.forms import CarSaleForm, SaleContactForm
 from recarguide.sale.models import PackagePlan
-from recarguide.sale.utils import ensure_sell_process
+from recarguide.sale.utils import ensure_sell_process, assert_stripe_data
 
 
 @login_required
@@ -66,8 +68,21 @@ def step3(request, process):
 
 @login_required
 @ensure_sell_process(step=4)
+@assert_stripe_data
 def step4(request, process):
-    return render(request, 'sale/step4.html')
+    stripe.api_key = settings.STRIPE['SECRET_KEY']
+    if request.method == 'POST':
+        resp = stripe.Charge.create(
+            amount=process.package_plan.stripe_price,
+            currency='usd',
+            card=request.POST['stripeToken'],
+            description='SELL_PROCESS_ID={}'.format(process.id),
+        )
+        process.payment = resp
+        process.step = 5
+        process.save()
+        return redirect('sale:step5')
+    return render(request, 'sale/step4.html', {'process': process})
 
 
 @login_required

@@ -1,4 +1,5 @@
 import datetime
+from email.utils import parseaddr
 
 from django.shortcuts import redirect
 
@@ -21,6 +22,17 @@ def ensure_sell_process(step):
         return dec2
 
     return dec1
+
+
+def assert_stripe_data(func):
+    def dec(request, *args, **kwargs):
+        if request.method == 'POST':
+            assert request.POST['stripeTokenType'] == 'card'
+            assert '@' in parseaddr(request.POST['stripeEmail'])[1]
+            assert request.POST['stripeToken'].startswith('tok_')
+        return func(request, *args, **kwargs)
+
+    return dec
 
 
 def years_choices(include_empty=True):

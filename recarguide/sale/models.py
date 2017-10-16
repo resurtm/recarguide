@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
+from django.contrib.postgres.fields import JSONField
 
 from recarguide.cars.models import Car
 
@@ -26,6 +27,10 @@ class PackagePlan(models.Model):
     def __str__(self):
         return '{name}, {price}'.format(name=self.name, price=self.price)
 
+    @property
+    def stripe_price(self):
+        return self.price * 100
+
 
 class SellProcess(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, default=None)
@@ -37,6 +42,7 @@ class SellProcess(models.Model):
                                      null=True, default=None)
 
     finished = models.BooleanField(default=False)
+    payment = JSONField(default=None, null=True)
 
 
 class Contact(models.Model):
