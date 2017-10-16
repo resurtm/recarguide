@@ -25,7 +25,7 @@ def step1(request, process):
         if plan_id == '':
             raise SuspiciousOperation('Invalid package plan has been specified')
         process.package_plan = PackagePlan.objects.get(id=int(plan_id))
-        process.step = 2
+        process.step = process.step if process.step > 2 else 2
         process.save()
         return redirect('sale:step2')
     plans = PackagePlan.objects.order_by('order').all()
@@ -41,7 +41,7 @@ def step2(request, process):
         if form.is_valid():
             with transaction.atomic():
                 process.car = form.save()
-                process.step = 3
+                process.step = process.step if process.step > 3 else 3
                 process.save()
             return redirect('sale:step3')
     else:
@@ -58,7 +58,7 @@ def step3(request, process):
             with transaction.atomic():
                 form.instance.sell_process = process
                 form.save()
-                process.step = 4
+                process.step = process.step if process.step > 4 else 4
                 process.save()
             return redirect('sale:step4')
     else:
