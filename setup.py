@@ -47,5 +47,6 @@ setup(
         'flower',
         'boto3',
         'Pillow',
+        'elasticsearch-dsl',
     ]
 )
