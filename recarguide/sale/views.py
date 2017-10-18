@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.utils.crypto import get_random_string
 
 from recarguide.cars.models import Model, Category, Photo
+from recarguide.common.tasks import process_photo
 from recarguide.sale.forms import CarSaleForm, SaleContactForm
 from recarguide.sale.models import PackagePlan
 from recarguide.sale.utils import ensure_sell_process, assert_stripe_data
@@ -131,5 +132,7 @@ def photos_upload(request, process):
                       filename=file.name,
                       filedata=base64.standard_b64encode(filedata))
         photo.save()
+
+        process_photo.delay(photo.id)
 
     return JsonResponse({})

@@ -110,3 +110,5 @@ MEDIA_URL = '/media/'
 LOGIN_URL = '/login/'
 
 STRIPE = local.STRIPE
+
+CELERY_BROKER_URL = local.CELERY_BROKER_URL

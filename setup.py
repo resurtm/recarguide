@@ -43,5 +43,8 @@ setup(
         'psycopg2',
         'django-widget-tweaks',
         'stripe',
+        'celery',
+        'flower',
+        'boto3',
     ]
 )
