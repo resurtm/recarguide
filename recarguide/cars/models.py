@@ -51,6 +51,18 @@ class Car(models.Model):
         return '{name} {slug}'.format(name=self.name, slug=self.slug)
 
 
+class Photo(models.Model):
+    sell_process = models.ForeignKey('sale.SellProcess',
+                                     on_delete=models.PROTECT, default=None)
+    car = models.ForeignKey('Car', on_delete=models.PROTECT, null=True,
+                            default=None)
+
+    ready = models.BooleanField(default=False)
+    uid = models.CharField(max_length=16)
+    filename = models.CharField(max_length=250)
+    filedata = models.TextField(null=True, default=None)
+
+
 def pre_save_category_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
 

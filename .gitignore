@@ -10,3 +10,5 @@ db.sqlite3
 /node_modules/
 /recarguide/common/static/bundle/*
 !/recarguide/common/static/bundle/.gitkeep
+/recarguide/common/media/*
+!/recarguide/common/media/.gitkeep

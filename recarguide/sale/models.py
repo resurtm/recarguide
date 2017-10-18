@@ -1,10 +1,7 @@
-from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
-
-from recarguide.cars.models import Car
 
 CONTACT_METHODS = (
     ('e', 'Email Only'),
@@ -33,8 +30,9 @@ class PackagePlan(models.Model):
 
 
 class SellProcess(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT, default=None)
-    car = models.ForeignKey(Car, on_delete=models.PROTECT, null=True,
+    user = models.ForeignKey('auth.User', on_delete=models.PROTECT,
+                             default=None)
+    car = models.ForeignKey('cars.Car', on_delete=models.PROTECT, null=True,
                             default=None)
 
     step = models.PositiveSmallIntegerField(default=1)
@@ -43,6 +41,10 @@ class SellProcess(models.Model):
 
     finished = models.BooleanField(default=False)
     payment = JSONField(default=None, null=True)
+
+    def __str__(self):
+        return 'User ID: {uid}, car ID: {cid}'.format(uid=self.user_id,
+                                                      cid=self.car_id)
 
 
 class Contact(models.Model):
@@ -60,6 +62,10 @@ class Contact(models.Model):
     phone = models.CharField(max_length=25, default='')
 
     contact_method = models.CharField(max_length=1, default='')
+
+    def __str__(self):
+        return '{fn} {ln}'.format(fn=self.first_name,
+                                  ln=self.last_name)
 
 
 def pre_save_package_plan_receiver(instance, *args, **kwargs):

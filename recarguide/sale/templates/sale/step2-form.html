@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form action="{% url 'sale:step2' %}" method="post" id="listing-form">
+<form action="{% url 'sale:step2' %}" method="post" id="listing-form" enctype="multipart/form-data">
     {% csrf_token %}
 
     {% with WIDGET_ERROR_CLASS='is-invalid' %}
@@ -71,6 +71,16 @@
             <div class="col-sm-7">
                 {% render_field form.description class+='form-control' rows='5' %}
                 {% include 'partials/field-errors.html' with errors=form.description.errors %}
+            </div>
+        </div>
+
+        <hr class="mt-4 mb-4">
+
+        <div class="row">
+            <label for="" class="col-sm-3 col-form-label">Photos/Images</label>
+
+            <div class="form-group col-sm-9">
+                <input type="file" name="photos" id="sale-photos" multiple>
             </div>
         </div>
 

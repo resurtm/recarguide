@@ -1,12 +1,17 @@
+import base64
+import os
+
 import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import SuspiciousOperation
+from django.core.files.storage import FileSystemStorage
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.utils.crypto import get_random_string
 
-from recarguide.cars.models import Model, Category
+from recarguide.cars.models import Model, Category, Photo
 from recarguide.sale.forms import CarSaleForm, SaleContactForm
 from recarguide.sale.models import PackagePlan
 from recarguide.sale.utils import ensure_sell_process, assert_stripe_data
@@ -109,3 +114,22 @@ def fetch_categories(request, category_id):
     for model in models:
         result[model.pk] = model.name
     return JsonResponse(result)
+
+
+@login_required
+@ensure_sell_process(step=2)
+def photos_upload(request, process):
+    if request.method == 'POST' and 'photos' in request.FILES:
+        file = request.FILES['photos']
+        uid = get_random_string(15)
+        filename = FileSystemStorage().save(uid, file)
+
+        with open(os.path.join(settings.MEDIA_ROOT, filename), 'rb') as fp:
+            filedata = fp.read()
+        photo = Photo(sell_process=process,
+                      uid=get_random_string(15),
+                      filename=file.name,
+                      filedata=base64.standard_b64encode(filedata))
+        photo.save()
+
+    return JsonResponse({})
