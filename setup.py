@@ -46,5 +46,6 @@ setup(
         'celery',
         'flower',
         'boto3',
+        'Pillow',
     ]
 )

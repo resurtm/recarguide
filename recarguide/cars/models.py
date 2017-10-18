@@ -71,11 +71,23 @@ class Photo(models.Model):
                                                fn=self.filename)
 
     @property
+    def s3_key_thumb(self):
+        return 'cars-photos/{dir}/thumb_{fn}'.format(dir=self.uid,
+                                                     fn=self.filename)
+
+    @property
     def original_url(self):
         pattern = '//s3.{region}.amazonaws.com/{bucket}/{key}'
         return pattern.format(region=settings.AWS_S3_REGION_NAME,
                               bucket=settings.AWS_S3_BUCKET_NAME,
                               key=self.s3_key)
+
+    @property
+    def thumb_url(self):
+        pattern = '//s3.{region}.amazonaws.com/{bucket}/{key}'
+        return pattern.format(region=settings.AWS_S3_REGION_NAME,
+                              bucket=settings.AWS_S3_BUCKET_NAME,
+                              key=self.s3_key_thumb)
 
 
 def pre_save_category_receiver(instance, *args, **kwargs):
@@ -101,6 +113,8 @@ def pre_save_car_receiver(instance, *args, **kwargs):
 def pre_delete_photo_receiver(instance, *args, **kwargs):
     boto3_client().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
                                  Key=instance.s3_key)
+    boto3_client().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
+                                 Key=instance.s3_key_thumb)
 
 
 pre_save.connect(pre_save_category_receiver, sender=Category)
