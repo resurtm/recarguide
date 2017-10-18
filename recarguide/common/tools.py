@@ -1,6 +1,7 @@
 import boto3
 import stripe
 from django.conf import settings
+from django.core.paginator import Paginator
 
 
 def ensure_stripe_api_key():
@@ -14,3 +15,10 @@ def boto3_client():
         aws_secret_access_key=settings.AWS_S3_SECRET_ACCESS_KEY,
         region_name=settings.AWS_S3_REGION_NAME
     )
+
+
+def chunked_iterator(queryset, chunk_size=50):
+    paginator = Paginator(queryset, chunk_size)
+    for page in range(1, paginator.num_pages + 1):
+        for obj in paginator.page(page).object_list:
+            yield obj

@@ -1,6 +1,9 @@
+from django.conf import settings
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, pre_delete
 from django.utils.text import slugify
+
+from recarguide.common.tools import boto3_client
 
 
 class Category(models.Model):
@@ -62,6 +65,11 @@ class Photo(models.Model):
     filename = models.CharField(max_length=250)
     filedata = models.TextField(null=True, default=None)
 
+    @property
+    def s3_key(self):
+        return 'cars-photos/{dir}/{fn}'.format(dir=self.uid,
+                                               fn=self.filename)
+
 
 def pre_save_category_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
@@ -83,7 +91,13 @@ def pre_save_car_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
 
 
+def pre_delete_photo_receiver(instance, *args, **kwargs):
+    boto3_client().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
+                                 Key=instance.s3_key)
+
+
 pre_save.connect(pre_save_category_receiver, sender=Category)
 pre_save.connect(pre_save_make_receiver, sender=Make)
 pre_save.connect(pre_save_model_receiver, sender=Model)
 pre_save.connect(pre_save_car_receiver, sender=Car)
+pre_delete.connect(pre_delete_photo_receiver, sender=Photo)
