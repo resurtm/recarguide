@@ -81,7 +81,13 @@
 
             <div class="form-group col-sm-9">
                 <input type="file" name="photos" id="sale-photos" multiple class="mt-1 mb-2">
-                <div id="sale-photos-preview" class="mt-2"></div>
+                <div id="sale-photos-preview" class="mt-2">
+                    {% for photo in photos %}
+                        <div data-id="" data-ready="1" data-real-id="{{ photo.id }}">
+                            <img src="{{ photo.original_url }}" alt="">
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
 

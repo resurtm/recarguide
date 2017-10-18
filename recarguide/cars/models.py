@@ -70,6 +70,13 @@ class Photo(models.Model):
         return 'cars-photos/{dir}/{fn}'.format(dir=self.uid,
                                                fn=self.filename)
 
+    @property
+    def original_url(self):
+        pattern = '//s3.{region}.amazonaws.com/{bucket}/{key}'
+        return pattern.format(region=settings.AWS_S3_REGION_NAME,
+                              bucket=settings.AWS_S3_BUCKET_NAME,
+                              key=self.s3_key)
+
 
 def pre_save_category_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)

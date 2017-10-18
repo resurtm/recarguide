@@ -53,7 +53,9 @@ def step2(request, process):
             return redirect('sale:step3')
     else:
         form = CarSaleForm(instance=process.car)
-    return render(request, 'sale/step2.html', {'form': form})
+    photos = Photo.objects.filter(sell_process=process)
+    return render(request, 'sale/step2.html', {'form': form,
+                                               'photos': photos})
 
 
 @login_required
