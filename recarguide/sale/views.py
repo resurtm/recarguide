@@ -13,6 +13,7 @@ from django.utils.crypto import get_random_string
 
 from recarguide.cars.models import Model, Category, Photo
 from recarguide.common.tasks import process_photo
+from recarguide.common.tools import ensure_stripe_api_key
 from recarguide.sale.forms import CarSaleForm, SaleContactForm
 from recarguide.sale.models import PackagePlan
 from recarguide.sale.utils import ensure_sell_process, assert_stripe_data
@@ -76,7 +77,7 @@ def step3(request, process):
 @ensure_sell_process(step=4)
 @assert_stripe_data
 def step4(request, process):
-    stripe.api_key = settings.STRIPE['SECRET_KEY']
+    ensure_stripe_api_key()
     if request.method == 'POST':
         resp = stripe.Charge.create(
             amount=process.package_plan.stripe_price,
@@ -122,17 +123,14 @@ def fetch_categories(request, category_id):
 def photos_upload(request, process):
     if request.method == 'POST' and 'photos' in request.FILES:
         file = request.FILES['photos']
-        uid = get_random_string(15)
+        uid = get_random_string(16)
         filename = FileSystemStorage().save(uid, file)
-
         with open(os.path.join(settings.MEDIA_ROOT, filename), 'rb') as fp:
             filedata = fp.read()
         photo = Photo(sell_process=process,
-                      uid=get_random_string(15),
+                      uid=uid,
                       filename=file.name,
                       filedata=base64.standard_b64encode(filedata))
         photo.save()
-
         process_photo.delay(photo.id)
-
     return JsonResponse({})
