@@ -7,7 +7,7 @@ from recarguide.cars.models import Photo
 class Command(BaseCommand):
     help = 'Deletes all the car photos'
 
-    BATCH_SIZE = 5
+    BATCH_SIZE = 50
 
     def handle(self, *args, **options):
         result = input('Photos will be completely removed, '

@@ -1,0 +1,14 @@
+#sale-photos-preview {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > div {
+    margin-right: 20px;
+    margin-bottom: 20px;
+
+    &, img {
+      width: 125px !important;
+      height: 125px !important;
+    }
+  }
+}
