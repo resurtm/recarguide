@@ -12,10 +12,10 @@ from django.shortcuts import render, redirect
 from django.utils.crypto import get_random_string
 
 from recarguide.cars.models import Model, Category, Photo
-from recarguide.common.tasks import process_photo
 from recarguide.common.tools import ensure_stripe_api_key
 from recarguide.sale.forms import CarSaleForm, SaleContactForm
 from recarguide.sale.models import PackagePlan
+from recarguide.sale.tasks import process_photo
 from recarguide.sale.utils import ensure_sell_process, assert_stripe_data
 
 
@@ -125,8 +125,10 @@ def photos_upload(request, process):
         file = request.FILES['photos']
         uid = get_random_string(16)
         filename = FileSystemStorage().save(uid, file)
-        with open(os.path.join(settings.MEDIA_ROOT, filename), 'rb') as fp:
+        filepath = os.path.join(settings.MEDIA_ROOT, filename)
+        with open(filepath, 'rb') as fp:
             filedata = fp.read()
+        os.remove(filepath)
         photo = Photo(sell_process=process,
                       uid=uid,
                       filename=file.name,
