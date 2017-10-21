@@ -1,5 +1,30 @@
-{% extends 'common/layout/main.html' %}
+{% extends 'common/layout/base.html' %}
 
-{% block content %}
+{% block body %}
+    {% include 'common/layout/navbar.html' %}
 
+    <div id="home-banner">
+        <div class="home-banner-bg"></div>
+        <div class="home-banner-body">
+            <div class="inner">
+                <h1>Find your next Car</h1>
+                <form class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control form-control-lg" name="q"
+                               placeholder="Make/Manufacturer, Model, or Keywords">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control  form-control-lg" name="r"
+                               placeholder="Region, City, Area">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-lg btn-success btn-block">
+                            <strong>Search</strong>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
 {% endblock %}
