@@ -13,24 +13,20 @@
 
     <div class="collapse navbar-collapse" id="primaryNavbarMenu">
         <ul class="navbar-nav mr-auto">
-            {% cv 'sale:step1' is_active %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'sale:step1' %}">Home <span class="sr-only">(current)</span></a>
-                </li>
-            {% endcv %}
-            {% cv 'sale:step1' is_inactive %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'sale:step1' %}">Home</a>
-                </li>
-            {% endcv %}
-
             <li class="nav-item">
                 <a class="nav-link" href="#">Buy</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'sale:index' %}">Sell</a>
-            </li>
+            {% cv 'sale:step*' is_active %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'sale:step1' %}">Sell <span class="sr-only">(current)</span></a>
+                </li>
+            {% endcv %}
+            {% cv 'sale:step*' is_inactive %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'sale:step1' %}">Sell</a>
+                </li>
+            {% endcv %}
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="researchDropdown"

@@ -1,3 +1,5 @@
+from fnmatch import fnmatch
+
 from django import template
 
 register = template.Library()
@@ -50,9 +52,9 @@ class CurrentViewNode(template.Node):
         self.node_list = node_list
 
     def render(self, context):
-        view_name = context.request.resolver_match.view_name
-        if self.view_name == view_name and self.state == 'is_active':
+        vname = context.request.resolver_match.view_name
+        if fnmatch(vname, self.view_name) and self.state == 'is_active':
             return self.node_list.render(context)
-        if self.view_name != view_name and self.state == 'is_inactive':
+        if not fnmatch(vname, self.view_name) and self.state == 'is_inactive':
             return self.node_list.render(context)
         return ''
