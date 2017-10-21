@@ -1,4 +1,6 @@
-.PHONY: celery flower webpack serve
+.PHONY: default celery flower webpack serve
+
+default: serve
 
 celery:
 	celery -A recarguide worker -l info
