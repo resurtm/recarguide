@@ -43,6 +43,7 @@ def step1(request, process):
 @login_required
 @ensure_sell_process(step=2)
 def step2(request, process):
+    # raise SuspiciousOperation('Invalid package plan has been specified')
     if request.method == 'POST':
         form = CarSaleForm(request.POST, instance=process.car)
         if form.is_valid():

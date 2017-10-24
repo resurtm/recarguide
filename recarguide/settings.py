@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     'widget_tweaks',
+    'debug_toolbar',
 
     'recarguide.common.apps.CommonConfig',
     'recarguide.auth.apps.AuthConfig',
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
 INSTALLED_APPS += local.INSTALLED_APPS
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -120,3 +122,5 @@ AWS_S3_REGION_NAME = local.AWS_S3_REGION_NAME
 AWS_S3_BUCKET_NAME = local.AWS_S3_BUCKET_NAME
 
 RAVEN_CONFIG = local.RAVEN_CONFIG
+
+INTERNAL_IPS = ['127.0.0.1']
