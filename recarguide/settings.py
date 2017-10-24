@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'recarguide.cars.apps.CarsConfig',
     'recarguide.sale.apps.SaleConfig',
 ]
+INSTALLED_APPS += local.INSTALLED_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -117,3 +118,5 @@ AWS_S3_ACCESS_KEY_ID = local.AWS_S3_ACCESS_KEY_ID
 AWS_S3_SECRET_ACCESS_KEY = local.AWS_S3_SECRET_ACCESS_KEY
 AWS_S3_REGION_NAME = local.AWS_S3_REGION_NAME
 AWS_S3_BUCKET_NAME = local.AWS_S3_BUCKET_NAME
+
+RAVEN_CONFIG = local.RAVEN_CONFIG
