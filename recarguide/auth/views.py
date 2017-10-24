@@ -7,6 +7,7 @@ from recarguide.auth.forms import UserCreationForm
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             form.save()
             user = authenticate(username=form.cleaned_data.get('username'),

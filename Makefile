@@ -1,4 +1,4 @@
-.PHONY: default celery flower webpack serve
+.PHONY: default celery flower webpack serve tests
 
 default: serve
 
@@ -12,4 +12,9 @@ webpack:
 	./node_modules/.bin/webpack --watch
 
 serve:
-	./manage.py runserver
+	python -Wall ./manage.py runserver
+
+tests:
+	python -Wall -m coverage run --source=recarguide ./manage.py test --keepdb
+	coverage report > coverage.txt
+	coverage html --directory=coverage

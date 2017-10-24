@@ -29,7 +29,7 @@ class UserCreationForm(forms.UserCreationForm):
         required=True,
         widget=EmailInput(
             attrs={'class': 'form-control',
-                   'aria-describedby': 'login-form-email-help',
+                   'aria-describedby': 'signup-form-email-help',
                    'placeholder': 'john-doe-70@gmail.com'}
         )
     )
@@ -56,7 +56,7 @@ class UserCreationForm(forms.UserCreationForm):
     def __adjust_username_field(self):
         old_attrs = self.fields['username'].widget.attrs
         new_attrs = {'class': 'form-control',
-                     'aria-describedby': 'login-form-username-help',
+                     'aria-describedby': 'signup-form-username-help',
                      'placeholder': 'johndoe1970'}
         self.fields['username'].widget.attrs = {**old_attrs, **new_attrs}
 
@@ -64,6 +64,6 @@ class UserCreationForm(forms.UserCreationForm):
         name = 'password{}'.format(str(num))
         old_attrs = self.fields[name].widget.attrs
         new_attrs = {'class': 'form-control',
-                     'aria-describedby': 'login-form-{}-help'.format(name),
+                     'aria-describedby': 'signup-form-{}-help'.format(name),
                      'placeholder': 's3cr3tp@$$w0rD'}
         self.fields[name].widget.attrs = {**old_attrs, **new_attrs}

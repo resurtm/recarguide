@@ -12,3 +12,6 @@ db.sqlite3
 !/recarguide/common/static/bundle/.gitkeep
 /recarguide/common/media/*
 !/recarguide/common/media/.gitkeep
+/coverage/
+/.coverage
+/coverage.txt

@@ -48,5 +48,7 @@ setup(
         'boto3',
         'Pillow',
         'elasticsearch-dsl',
+        'coverage',
+        'beautifulsoup4',
     ]
 )
