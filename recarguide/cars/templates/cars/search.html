@@ -6,4 +6,52 @@
     {% breadcrumb 'Home' 'common:home' %}
     {% breadcrumb 'Cars for Sale' 'cars:search' %}
     {% breadcrumbs %}
+
+    <div class="row" id="search-results">
+
+        <div class="col-lg-3 col-md-4" id="search-filter">
+            <div class="card">
+                <div class="card-header">Narrow Results</div>
+                <div class="card-body">
+                    <h6 class="card-title">Current Search</h6>
+
+                    <hr>
+
+                    <h6 class="card-title">Make</h6>
+
+                    <hr>
+
+                    <h6 class="card-title">Model</h6>
+
+                    <hr>
+
+                    <h6 class="card-title">Category</h6>
+
+                    <hr>
+
+                    <h6 class="card-title">Year</h6>
+
+                    <hr>
+
+                    <h6 class="card-title">Price</h6>
+
+                    <hr>
+
+                    <h6 class="card-title">Options</h6>
+
+                    <hr>
+
+                    <div class="action-buttons">
+                        <a href="#" class="btn btn-primary px-4">Apply Filters</a>
+                        <a href="#" class="btn btn-inverse px-4">Clear Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-md-8">
+            results here
+        </div>
+
+    </div>
 {% endblock %}

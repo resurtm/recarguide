@@ -13,6 +13,27 @@ def indices_list():
     return ['{}{}'.format(index_prefix, index) for index in indices]
 
 
+def mappings_list():
+    mappings = {
+        'car': {
+            'properties': {
+                'make': {
+                    'type': 'string',
+                    'index': 'not_analyzed',
+                },
+                'model': {
+                    'type': 'string',
+                    'index': 'not_analyzed',
+                },
+            },
+        },
+    }
+    res = {}
+    for k, v in mappings.items():
+        res['{}{}'.format(index_prefix, k)] = v
+    return res
+
+
 def ensure_es():
     """
     :return:
@@ -26,9 +47,13 @@ def ensure_es():
 
 def ensure_indices():
     ensure_es()
+    mappings = mappings_list()
     for index in indices_list():
         if not es.indices.exists(index=index):
-            es.indices.create(index=index)
+            body = {'mappings': {
+                '{}_type'.format(index): mappings[index]
+            }}
+            es.indices.create(index=index, body=body)
 
 
 def delete_indices():
