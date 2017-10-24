@@ -15,3 +15,5 @@ db.sqlite3
 /coverage/
 /.coverage
 /coverage.txt
+/dumpdata.json
+/test.json

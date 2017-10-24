@@ -4,7 +4,7 @@ from django.forms import ModelForm, ModelChoiceField, ChoiceField
 from recarguide.cars.models import Car, Make, Model, Category
 from recarguide.common.countries import get_countries
 from recarguide.sale.models import Contact
-from recarguide.sale.utils import years_choices
+from recarguide.sale.tools import years_choices
 
 
 def rel_or_none(instance, attr):

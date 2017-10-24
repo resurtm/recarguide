@@ -1,0 +1,14 @@
+[
+  {
+    "model": "sale.sellprocess",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "car": null,
+      "step": 2,
+      "package_plan": 2,
+      "finished": false,
+      "payment": {}
+    }
+  }
+]

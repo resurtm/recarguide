@@ -16,7 +16,7 @@ from recarguide.common.tools import ensure_stripe_api_key
 from recarguide.sale.forms import CarSaleForm, SaleContactForm
 from recarguide.sale.models import PackagePlan
 from recarguide.sale.tasks import process_photo
-from recarguide.sale.utils import ensure_sell_process, assert_stripe_data
+from recarguide.sale.tools import ensure_sell_process, assert_stripe_data
 
 
 @login_required
