@@ -3,6 +3,12 @@ python:
   - 3.5
   - 3.6
 cache: pip
+services:
+  - postgresql
+before_script:
+  - cp recarguide/settings_local.tests.py recarguide/settings_local.py
+  - psql -c "CREATE DATABASE testdb;" -U postgres
+  - psql -c "CREATE USER testuser WITH PASSWORD 't3stpa$$w0rd';" -U postgres
 install:
   - pip install -e .
 script:
