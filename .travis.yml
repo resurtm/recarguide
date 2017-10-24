@@ -9,6 +9,9 @@ cache: pip
 services:
   - postgresql
 
+addons:
+  postgresql: 9.6
+
 before_script:
   - cp recarguide/settings_local.tests.py recarguide/settings_local.py
   - psql -c "CREATE DATABASE testdb;" -U postgres
@@ -16,7 +19,10 @@ before_script:
   - ./manage.py migrate
 
 install:
-  - pip install -e .
+  - pip install -e . -r requirements.txt
 
 script:
   - make tests
+
+after_script:
+  - cat coverage.txt
