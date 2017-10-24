@@ -17,8 +17,8 @@ def boto3_client():
     )
 
 
-def chunked_iterator(queryset, chunk_size=50):
-    paginator = Paginator(queryset, chunk_size)
+def batched_iterator(queryset, batchsize=50):
+    paginator = Paginator(queryset, batchsize)
     for page in range(1, paginator.num_pages + 1):
         for obj in paginator.page(page).object_list:
             yield obj

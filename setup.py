@@ -47,7 +47,8 @@ setup(
         'flower',
         'boto3',
         'Pillow',
-        'elasticsearch-dsl',
+        'elasticsearch>=2.0.0,<3.0.0',
+        'elasticsearch-dsl>=2.0.0,<3.0.0',
         'coverage',
         'beautifulsoup4',
     ]

@@ -50,7 +50,7 @@ def years_choices(include_empty=True, min_year=1900, max_year=None):
         value is 1900
     :type min_year: int
 
-    :param max_year: minimal/lowest year of the generated range, the default
+    :param max_year: maximal/highest year of the generated range, the default
         value is the current year
     :type max_year: int
 
