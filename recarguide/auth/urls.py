@@ -6,6 +6,8 @@ from django.contrib.auth import views
 from recarguide.auth import forms as auth_forms
 from recarguide.auth import views as auth_views
 
+app_name = 'auth'
+
 urlpatterns = [
     url(r'^login/$', views.LoginView.as_view(
         authentication_form=auth_forms.AuthenticationForm), name='login'),

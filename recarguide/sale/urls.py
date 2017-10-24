@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from recarguide.sale import views
 
+app_name = 'sale'
+
 urlpatterns = [
     url(r'^$', views.sale, name='index'),
 
