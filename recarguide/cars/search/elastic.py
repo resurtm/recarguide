@@ -17,22 +17,10 @@ def mappings_list():
     mappings = {
         'car': {
             'properties': {
-                'make': {
-                    'type': 'string',
-                    'index': 'not_analyzed',
-                },
-                'model': {
-                    'type': 'string',
-                    'index': 'not_analyzed',
-                },
-                'category': {
-                    'type': 'string',
-                    'index': 'not_analyzed',
-                },
-                'subcategory': {
-                    'type': 'string',
-                    'index': 'not_analyzed',
-                },
+                'make': {'type': 'string', 'index': 'not_analyzed'},
+                'model': {'type': 'string', 'index': 'not_analyzed'},
+                'category': {'type': 'string', 'index': 'not_analyzed'},
+                'subcategory': {'type': 'string', 'index': 'not_analyzed'},
             },
         },
     }

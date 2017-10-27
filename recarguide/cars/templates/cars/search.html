@@ -1,6 +1,7 @@
 {% extends 'common/layout/main.html' %}
 
 {% load breadcrumbs %}
+{% load search %}
 
 {% block afternavbar %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -10,9 +11,10 @@
                 <div class="row">
                     <div class="col-md-4 pr-0">
                         <input class="form-control input-block-level" type="search"
-                               placeholder="Search by Keyword" aria-label="Search by Keyword">
+                               placeholder="Search by Keyword" aria-label="Search by Keyword"
+                               value="{% firstof fsearch.keyword '' %}">
                     </div>
-                    <div class="col pl-0">
+                    <div class="col pl-0 mt-2 mt-md-0">
                         <button class="btn btn-outline-success ml-3 mr-0" type="submit">Search</button>
                         <button class="btn btn-outline-warning ml-2" type="submit">Save Search</button>
                     </div>
@@ -30,38 +32,22 @@
 
     <div class="row" id="search-results">
 
-        <div class="col-lg-3 col-md-4" id="search-filter">
+        <div class="col-lg-3 col-md-4 mb-4" id="search-filter">
             <div class="card">
                 <div class="card-header">Narrow Results</div>
                 <div class="card-body">
                     <h6 class="card-title">Current Search</h6>
-
                     <hr>
-
-                    <h6 class="card-title">Make</h6>
-
-                    <hr>
-
-                    <h6 class="card-title">Model</h6>
-
-                    <hr>
-
-                    <h6 class="card-title">Category</h6>
-
-                    <hr>
-
+                    {% facet_group 'make' fsearch source %}
+                    {% facet_group 'model' fsearch source %}
+                    {% facet_group 'category' fsearch source %}
+                    {% facet_group 'subcategory' fsearch source %}
                     <h6 class="card-title">Year</h6>
-
                     <hr>
-
                     <h6 class="card-title">Price</h6>
-
                     <hr>
-
                     <h6 class="card-title">Options</h6>
-
                     <hr>
-
                     <div class="action-buttons">
                         <a href="#" class="btn btn-primary px-4">Apply Filters</a>
                         <a href="#" class="btn btn-inverse px-4">Clear Search</a>
@@ -81,13 +67,13 @@
 
             <nav aria-label="Cars for Sale Search Pagination">
                 <ul class="pagination pagination-lg justify-content-center">
-                    <li class="page-item disabled">
+                    <li class="page-item {% if not cars.has_previous %}disabled{% endif %}">
                         <a class="page-link" href="#" tabindex="-1">Previous</a>
                     </li>
                     <li class="page-item"><a class="page-link" href="#">1</a></li>
                     <li class="page-item"><a class="page-link" href="#">2</a></li>
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
+                    <li class="page-item {% if not cars.has_next %}disabled{% endif %}">
                         <a class="page-link" href="#">Next</a>
                     </li>
                 </ul>

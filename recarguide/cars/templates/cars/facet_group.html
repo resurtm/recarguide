@@ -1,0 +1,19 @@
+{% if show %}
+    <div class="facet-group">
+        <h6 class="card-title">{{ title }}</h6>
+        <ul>
+            {% for name, count, url in main_items %}
+                <li><a href="{{ url }}">{{ name }}</a> ({{ count }})</li>
+            {% endfor %}
+
+            {% if more_items %}
+                <li class="show-more"><a href="#">Show More +</a></li>
+
+                {% for name, count, url in more_items %}
+                    <li hidden><a href="{{ url }}">{{ name }}</a> ({{ count }})</li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+    <hr>
+{% endif %}

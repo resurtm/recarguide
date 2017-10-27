@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from recarguide.cars.facetedsearch import FacetedSearch as FS
+from recarguide.cars.search.faceted import FacetedSearch as FS
 
 
 class FacetedSearchParamsTestCase(TestCase):

@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from recarguide.cars.facetedsearch import _range_facet_converter as rfc
+from recarguide.cars.search.faceted import _range_facet_converter as rfc
 
 
 class RangeFacetConverterTestCase(TestCase):

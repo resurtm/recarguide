@@ -19,3 +19,4 @@ require('./package-selector');
 require('./sale-make-model-fields');
 require('./sale-category-fields');
 require('./sale-photos');
+require('./search');

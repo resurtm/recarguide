@@ -2,6 +2,21 @@
   margin-bottom: 375px;
 }
 
-#search-filter .action-buttons {
-  text-align: center;
+#search-filter {
+  .action-buttons {
+    text-align: center;
+  }
+
+  .facet-group {
+    ul, li {
+      list-style: none;
+      padding-left: 0;
+      margin-left: 0;
+      font-size:14px;
+    }
+    li.show-more {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+  }
 }

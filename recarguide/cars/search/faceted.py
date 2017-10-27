@@ -1,3 +1,8 @@
+from urllib.parse import urlencode
+
+from django.urls import reverse
+
+
 def _range_facet_converter(v):
     if '-' not in v:
         return None
@@ -23,6 +28,7 @@ PARAMS = (
     ('Make', 'make', 'm', str),
     ('Model', 'model', 'n', str),
     ('Category', 'category', 'c', str),
+    ('Sub-Category', 'subcategory', 's', str),
     ('Year', 'year', 'y', _range_facet_converter),
     ('Price', 'price', 'p', _range_facet_converter),
     ('Has Picture', 'has_picture', 'hp', _bool_facet_converter),
@@ -32,8 +38,8 @@ PARAMS = (
 AGGREGATABLE_PARAMS = ('make', 'model', 'category', 'subcategory')
 
 PAGE_SIZE = 7
-MAX_SHORT_FACET_SIZE = 7
-MAX_LONG_FACET_SIZE = 21
+MAX_SHORT_FACET_SIZE = 5
+MAX_LONG_FACET_SIZE = 10
 
 
 class FacetedSearch(object):
@@ -42,10 +48,22 @@ class FacetedSearch(object):
             get_params = {}
         self._parse_params(get_params)
 
-    def build_query(self, offset=0, limit=PAGE_SIZE):
+    def build_query(self, offset=0, limit=PAGE_SIZE, type='query'):
+        assert type == 'query' or type == 'filter'
         return {**{'from': offset, 'size': limit},
-                **self._build_condition(),
+                **self._build_condition(type),
                 **self._build_aggregations()}
+
+    def build_url(self, **kwargs):
+        params = []
+        for __, id, key, __ in PARAMS:
+            if id in kwargs:
+                params.append((key, kwargs[id]))
+            elif getattr(self, id):
+                params.append((key, getattr(self, id)))
+
+        url = reverse('cars:search')
+        return url + ('?' + urlencode(params)) if params else ''
 
     @property
     def params(self):
@@ -60,23 +78,24 @@ class FacetedSearch(object):
             val = converter(val) if len(val) > 0 else None
             setattr(self, id, val)
 
-    def _build_condition(self):
-        result = {'query': {}}
+    def _build_condition(self, type='query'):
+        assert type == 'query' or type == 'filter'
+        result = {type: {}}
         must = self._build_must()
         if must:
-            result['query'] = {'bool': {'must': must}}
-        if len(result['query']) == 0:
-            result['query'] = {'match_all': {}}
+            result[type] = {'bool': {'must': must}}
+        if len(result[type]) == 0:
+            result[type] = {'match_all': {}}
         return result
 
     def _build_must(self):
         must = []
         if self.keyword is not None:
             must.append({'match_phrase': {'_all': self.keyword}})
-        if self.make is not None:
-            must.append({'term': {'make': self.make}})
-        if self.model is not None:
-            must.append({'term': {'model': self.model}})
+        for param in AGGREGATABLE_PARAMS:
+            value = getattr(self, param)
+            if value is not None:
+                must.append({'term': {param: value}})
         # todo: add category, year price, has picture, sold lisings
         # todo: make this code better
         return must

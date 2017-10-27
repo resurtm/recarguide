@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from recarguide.cars.facetedsearch import _bool_facet_converter as bfc
+from recarguide.cars.search.faceted import _bool_facet_converter as bfc
 
 
 class BoolFacetConverterTestCase(TestCase):
