@@ -1,7 +1,8 @@
 {% extends 'common/layout/main.html' %}
 
 {% load breadcrumbs %}
-{% load search %}
+{% load facet_group %}
+{% load current_search %}
 
 {% block afternavbar %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,8 +37,7 @@
             <div class="card">
                 <div class="card-header">Narrow Results</div>
                 <div class="card-body">
-                    <h6 class="card-title">Current Search</h6>
-                    <hr>
+                    {% current_search fsearch %}
                     {% facet_group 'make' fsearch source %}
                     {% facet_group 'model' fsearch source %}
                     {% facet_group 'category' fsearch source %}
