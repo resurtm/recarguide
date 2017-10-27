@@ -11,5 +11,5 @@ def current_search(fs):
     for title, id, key, __ in PARAMS:
         value = getattr(fs, id)
         if value:
-            params.append((title, '#', value))
+            params.append((title, fs.build_url(**{id: '-'}), value))
     return {'params': params}

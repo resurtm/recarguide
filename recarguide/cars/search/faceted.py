@@ -57,13 +57,25 @@ class FacetedSearch(object):
     def build_url(self, **kwargs):
         params = []
         for __, id, key, __ in PARAMS:
+            if self._check_special_url_cases(id, kwargs):
+                continue
             if id in kwargs:
-                params.append((key, kwargs[id]))
+                if kwargs[id] == '-':
+                    continue
+                else:
+                    params.append((key, kwargs[id]))
             elif getattr(self, id):
                 params.append((key, getattr(self, id)))
 
         url = reverse('cars:search')
-        return url + ('?' + urlencode(params)) if params else ''
+        return url + ('?' + urlencode(params) if len(params) > 0 else '')
+
+    def _check_special_url_cases(self, id, kw):
+        if id == 'subcategory' and 'category' in kw and kw['category'] == '-':
+            return True
+        if id == 'model' and 'make' in kw and kw['make'] == '-':
+            return True
+        return False
 
     @property
     def params(self):
