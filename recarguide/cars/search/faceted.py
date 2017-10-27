@@ -36,6 +36,7 @@ PARAMS = (
 )
 
 AGGREGATABLE_PARAMS = ('make', 'model', 'category', 'subcategory')
+RANGED_PARAMS = ('year', 'price')
 
 PAGE_SIZE = 7
 MAX_SHORT_FACET_SIZE = 5
@@ -66,7 +67,7 @@ class FacetedSearch(object):
                     params.append((key, kwargs[id]))
             elif getattr(self, id):
                 params.append((key, getattr(self, id)))
-
+        self._handle_ranges(params)
         url = reverse('cars:search')
         return url + ('?' + urlencode(params) if len(params) > 0 else '')
 
@@ -76,6 +77,11 @@ class FacetedSearch(object):
         if id == 'model' and 'make' in kw and kw['make'] == '-':
             return True
         return False
+
+    def _handle_ranges(self, params):
+        for k, v in enumerate(params):
+            if isinstance(v[1], tuple):
+                params[k] = v[0], '{}-{}'.format(v[1][0], v[1][1])
 
     @property
     def params(self):
@@ -106,9 +112,17 @@ class FacetedSearch(object):
             must.append({'match_phrase': {'_all': self.keyword}})
         for param in AGGREGATABLE_PARAMS:
             value = getattr(self, param)
-            if value is not None:
+            if value:
                 must.append({'term': {param: value}})
-        # todo: add category, year price, has picture, sold lisings
+        for param in RANGED_PARAMS:
+            value = getattr(self, param)
+            if value:
+                must.append({
+                    'range': {
+                        param: {'gte': value[0], 'lte': value[1]},
+                    },
+                })
+        # todo: has picture, sold lisings
         # todo: make this code better
         return must
 
