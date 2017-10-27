@@ -2,6 +2,27 @@
 
 {% load breadcrumbs %}
 
+{% block afternavbar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-3">
+
+            <form style="width: 100%;">
+                <div class="row">
+                    <div class="col-md-4 pr-0">
+                        <input class="form-control input-block-level" type="search"
+                               placeholder="Search by Keyword" aria-label="Search by Keyword">
+                    </div>
+                    <div class="col pl-0">
+                        <button class="btn btn-outline-success ml-3 mr-0" type="submit">Search</button>
+                        <button class="btn btn-outline-warning ml-2" type="submit">Save Search</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </nav>
+{% endblock %}
+
 {% block content %}
     {% breadcrumb 'Home' 'common:home' %}
     {% breadcrumb 'Cars for Sale' 'cars:search' %}

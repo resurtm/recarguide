@@ -2,8 +2,7 @@
 
 {% block body %}
     {% include 'common/layout/navbar.html' %}
-
+    {% block afternavbar %}{% endblock %}
     {% block content %}{% endblock %}
-
     {% include 'common/layout/footer.html' %}
 {% endblock %}

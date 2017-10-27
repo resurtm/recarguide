@@ -42,6 +42,7 @@ def ensure_es():
     global es
     if es is None:
         es = Elasticsearch()
+    print(es)
     return es
 
 
@@ -95,3 +96,4 @@ def reindex_car(car):
              doc_type='{}car_type'.format(index_prefix),
              id=car.id,
              body=body)
+

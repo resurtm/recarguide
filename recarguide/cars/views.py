@@ -1,6 +1,8 @@
 from django.http import Http404
 from django.shortcuts import render
 
+import recarguide.cars.elasticsearch as es
+from recarguide.cars.facetedsearch import FacetedSearch
 from recarguide.cars.models import Car
 
 
@@ -15,4 +17,21 @@ def view(request, slug, id):
 
 
 def search(request):
+    search = FacetedSearch(request.GET)
+
+    body = {
+        'query': {
+            'term': {
+                '_all': 'land',
+            },
+        },
+    }
+
+    es.ensure_es()
+    result = es.es.search(index='recarguide_car',
+                          doc_type='recarguide_car_type',
+                          body=body)
+
+    print(result)
+
     return render(request, 'cars/search.html')
