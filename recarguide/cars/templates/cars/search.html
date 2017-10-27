@@ -71,7 +71,27 @@
         </div>
 
         <div class="col-lg-9 col-md-8">
-            results here
+            {% for car in cars %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        {{ car.name }}
+                    </div>
+                </div>
+            {% endfor %}
+
+            <nav aria-label="Cars for Sale Search Pagination">
+                <ul class="pagination pagination-lg justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
     </div>

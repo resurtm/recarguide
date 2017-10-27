@@ -1,9 +1,10 @@
+from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import render
 
-import recarguide.cars.elasticsearch as es
-from recarguide.cars.facetedsearch import FacetedSearch
 from recarguide.cars.models import Car
+from recarguide.cars.search.faceted import FacetedSearch, PAGE_SIZE
+from recarguide.cars.search.source import CarSource
 
 
 def view(request, slug, id):
@@ -17,21 +18,16 @@ def view(request, slug, id):
 
 
 def search(request):
-    search = FacetedSearch(request.GET)
+    fsearch = FacetedSearch(request.GET)
+    source = CarSource(fsearch)
 
-    body = {
-        'query': {
-            'term': {
-                '_all': 'land',
-            },
-        },
-    }
+    paginator = Paginator(source, PAGE_SIZE)
+    try:
+        page = int(request.GET.get('page', 1))
+    except ValueError:
+        raise Http404
+    if page <= 0 or page > paginator.num_pages:
+        raise Http404
+    cars = paginator.page(page)
 
-    es.ensure_es()
-    result = es.es.search(index='recarguide_car',
-                          doc_type='recarguide_car_type',
-                          body=body)
-
-    print(result)
-
-    return render(request, 'cars/search.html')
+    return render(request, 'cars/search.html', {'cars': cars})
