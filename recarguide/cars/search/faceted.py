@@ -90,6 +90,13 @@ class FacetedSearch(object):
             res[id] = getattr(self, id)
         return res
 
+    @property
+    def params_with_key(self):
+        res = {}
+        for __, id, key, __ in PARAMS:
+            res[key] = getattr(self, id)
+        return res
+
     def _parse_params(self, params):
         for name, id, key, converter in PARAMS:
             val = str(params.get(key, '')).strip()

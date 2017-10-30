@@ -6,13 +6,13 @@
         <div class="home-banner-body">
             <div class="inner">
                 <h1>Find your next Car</h1>
-                <form class="row">
+                <form class="row" action="{% url 'cars:search' %}" method="get">
                     <div class="form-group col-md-6">
                         <input type="text" class="form-control form-control-lg" name="q"
                                placeholder="Make/Manufacturer, Model, or Keywords">
                     </div>
                     <div class="form-group col-md-4">
-                        <input type="text" class="form-control  form-control-lg" name="r"
+                        <input type="text" class="form-control  form-control-lg" name="l"
                                placeholder="Region, City, Area">
                     </div>
                     <div class="col-md-2">
