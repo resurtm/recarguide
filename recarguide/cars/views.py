@@ -33,4 +33,5 @@ def search(request):
 
     return render(request, 'cars/search.html', {'cars': cars,
                                                 'fsearch': fsearch,
-                                                'source': source})
+                                                'source': source,
+                                                'paginator': paginator})

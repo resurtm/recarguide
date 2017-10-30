@@ -4,6 +4,7 @@
 {% load facet_group %}
 {% load current_search %}
 {% load header_search_bar %}
+{% load search_pagination %}
 
 {% block afternavbar %}
     {% header_search_bar fsearch %}
@@ -48,19 +49,7 @@
                 </div>
             {% endfor %}
 
-            <nav aria-label="Cars for Sale Search Pagination">
-                <ul class="pagination pagination-lg justify-content-center">
-                    <li class="page-item {% if not cars.has_previous %}disabled{% endif %}">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item {% if not cars.has_next %}disabled{% endif %}">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            {% search_pagination fsearch source cars paginator %}
         </div>
 
     </div>

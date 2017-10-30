@@ -68,6 +68,8 @@ class FacetedSearch(object):
             elif getattr(self, id):
                 params.append((key, getattr(self, id)))
         self._handle_ranges(params)
+        if 'page' in kwargs:
+            params.append(('page', kwargs['page']))
         url = reverse('cars:search')
         return url + ('?' + urlencode(params) if len(params) > 0 else '')
 
