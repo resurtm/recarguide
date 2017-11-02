@@ -1,4 +1,4 @@
-ReCarGuide - Car Guide Application
+ReCarGuide — Car Guide Application
 ==================================
 
 .. image:: https://travis-ci.org/resurtm/recarguide.svg?branch=master
