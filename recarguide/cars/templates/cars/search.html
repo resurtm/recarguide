@@ -36,7 +36,6 @@
             </div>
         </div>
 
-        {% comment %}
         <div class="col-lg-9 col-md-8">
             {% for car in cars %}
                 <div class="card mb-4">
@@ -46,8 +45,7 @@
                 </div>
             {% endfor %}
 
-            {% search_pagination fsearch source cars paginator %}
+            {% search_pagination source cars %}
         </div>
-        {% endcomment %}
     </div>
 {% endblock %}

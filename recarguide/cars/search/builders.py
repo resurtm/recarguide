@@ -60,13 +60,14 @@ def name_by_id(find):
         if id == find:
             return name
 
+
 class UrlBuilder(object):
     def __init__(self, params=None):
         self._params = params if params else {}
 
     def build(self, **kwargs):
         res = []
-        kw = {k: v.strip() for k, v in kwargs.items()}
+        kw = {k: str(v).strip() for k, v in kwargs.items()}
         for __, id, key, __ in PARAMS:
             if self._skip_param(id, kw):
                 continue

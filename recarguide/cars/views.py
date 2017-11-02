@@ -26,6 +26,4 @@ def search(request):
     if page <= 0 or page > pager.num_pages:
         raise Http404
     cars = pager.page(page)
-    return render(request, 'cars/search.html', {'source': source,
-                                                'pager': pager,
-                                                'cars': cars})
+    return render(request, 'cars/search.html', {'source': source, 'cars': cars})

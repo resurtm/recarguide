@@ -51,3 +51,17 @@ def facet_group(id, source):
     return {'title': name_by_id(id),
             'main_items': items[:SHORT_FACET_SIZE],
             'more_items': items[LONG_FACET_SIZE:]}
+
+
+@register.inclusion_tag('cars/search_pagination.html')
+def search_pagination(source, cars):
+    if not cars.has_other_pages():
+        return {}
+    url = UrlBuilder(source.params)
+    pages = [
+        (i, url.build(page=i))
+        for i in range(1, cars.paginator.num_pages + 1)
+    ]
+    prev = url.build(page=cars.number - 1) if cars.has_previous() else None
+    next = url.build(page=cars.number + 1) if cars.has_next() else None
+    return {'pages': pages, 'prev': prev, 'next': next}
