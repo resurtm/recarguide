@@ -2,9 +2,9 @@
     <div class="filter-group">
         <h6 class="card-title">Current Search</h6>
         <ul>
-            {% for title, url, value in params %}
+            {% for name, url, value in params %}
                 <li>
-                    {{ title }}:
+                    {{ name }}:
                     <a href="{{ url }}">{{ value }} <strong>&times;</strong></a>
                 </li>
             {% endfor %}

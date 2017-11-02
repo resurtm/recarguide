@@ -3,8 +3,7 @@ from django.http import Http404
 from django.shortcuts import render
 
 from recarguide.cars.models import Car
-from recarguide.cars.search.faceted import FacetedSearch, PAGE_SIZE
-from recarguide.cars.search.source import CarSource
+from recarguide.cars.search import QueryBuilder, CarSource, PAGE_SIZE
 
 
 def view(request, slug, id):
@@ -18,20 +17,15 @@ def view(request, slug, id):
 
 
 def search(request):
-    fsearch = FacetedSearch(request.GET)
-    source = CarSource(fsearch)
-
-    paginator = Paginator(source, PAGE_SIZE)
+    source = CarSource(QueryBuilder(request.GET))
+    pager = Paginator(source, PAGE_SIZE)
     try:
         page = int(request.GET.get('page', 1))
     except ValueError:
         raise Http404
-    if page <= 0 or page > paginator.num_pages:
+    if page <= 0 or page > pager.num_pages:
         raise Http404
-    cars = paginator.page(page)
-    source.page = page
-
-    return render(request, 'cars/search.html', {'cars': cars,
-                                                'fsearch': fsearch,
-                                                'source': source,
-                                                'paginator': paginator})
+    cars = pager.page(page)
+    return render(request, 'cars/search.html', {'source': source,
+                                                'pager': pager,
+                                                'cars': cars})

@@ -2,19 +2,17 @@ import datetime
 
 from elasticsearch import Elasticsearch
 
-from recarguide.cars.models import Car
-
 instance = None
 index_prefix = 'recarguide_'
 
 
-def indices_list():
-    indices = ['car']
-    return ['{}{}'.format(index_prefix, index) for index in indices]
+def indices():
+    items = ['car']
+    return ['{}{}'.format(index_prefix, index) for index in items]
 
 
-def mappings_list():
-    mappings = {
+def mappings():
+    items = {
         'car': {
             'properties': {
                 'make': {'type': 'string', 'index': 'not_analyzed'},
@@ -24,10 +22,7 @@ def mappings_list():
             },
         },
     }
-    res = {}
-    for k, v in mappings.items():
-        res['{}{}'.format(index_prefix, k)] = v
-    return res
+    return {'{}{}'.format(index_prefix, k): v for k, v in items.items()}
 
 
 def ensure_instance():
@@ -43,23 +38,22 @@ def ensure_instance():
 
 def ensure_indices():
     ensure_instance()
-    mappings = mappings_list()
-    for index in indices_list():
-        if not instance.indices.exists(index=index):
-            body = {'mappings': {
-                '{}_type'.format(index): mappings[index]
-            }}
-            instance.indices.create(index=index, body=body)
+    maps = mappings()
+    for index in indices():
+        if instance.indices.exists(index=index):
+            continue
+        body = {'mappings': {'{}_type'.format(index): maps[index]}}
+        instance.indices.create(index=index, body=body)
 
 
 def delete_indices():
     ensure_instance()
-    for index in indices_list():
+    for index in indices():
         if instance.indices.exists(index=index):
             instance.indices.delete(index=index)
 
 
-def serialize_car(car):
+def encode_car(car):
     if car.category.parent_id is None:
         category = car.category.name
         subcategory = None
@@ -79,14 +73,8 @@ def serialize_car(car):
 
 
 def reindex_car(car):
-    """
-    :param car:
-    :type car: Car
-
-    :return:
-    """
     ensure_instance()
-    body = serialize_car(car)
+    body = encode_car(car)
     body['timestamp'] = datetime.datetime.now()
     instance.index(index='{}car'.format(index_prefix),
                    doc_type='{}car_type'.format(index_prefix),
@@ -94,8 +82,8 @@ def reindex_car(car):
                    body=body)
 
 
-def search_cars(query_body):
+def search_cars(query_body, query='search'):
     ensure_instance()
-    return instance.search(index='recarguide_car',
-                           doc_type='recarguide_car_type',
-                           body=query_body)
+    return getattr(instance, query)(index='{}car'.format(index_prefix),
+                                    doc_type='{}car_type'.format(index_prefix),
+                                    body=query_body)
