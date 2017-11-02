@@ -60,7 +60,6 @@ def name_by_id(find):
         if id == find:
             return name
 
-
 class UrlBuilder(object):
     def __init__(self, params=None):
         self._params = params if params else {}

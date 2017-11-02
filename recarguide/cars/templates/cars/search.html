@@ -18,10 +18,10 @@
                 <div class="card-header">Narrow Results</div>
                 <div class="card-body">
                     {% current_filters source %}
-{#                    {% facet_group 'make' fsearch source %}#}
-{#                    {% facet_group 'model' fsearch source %}#}
-{#                    {% facet_group 'category' fsearch source %}#}
-{#                    {% facet_group 'subcategory' fsearch source %}#}
+                    {% facet_group 'make' source %}
+                    {% facet_group 'model' source %}
+                    {% facet_group 'category' source %}
+                    {% facet_group 'subcategory' source %}
                     <h6 class="card-title">Year</h6>
                     <hr>
                     <h6 class="card-title">Price</h6>
