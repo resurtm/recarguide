@@ -17,5 +17,7 @@ urlpatterns = [
         name='fetch_models'),
     url(r'^fetch-categories/(?P<category_id>\d+)/$', views.fetch_categories,
         name='fetch_categories'),
-    url(r'^upload-photos/$', views.photos_upload, name='photos_upload'),
+
+    url(r'^upload-photo/$', views.upload_photo, name='upload_photo'),
+    url(r'^delete-photo/$', views.delete_photo, name='delete_photo'),
 ]

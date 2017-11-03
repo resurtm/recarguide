@@ -65,6 +65,9 @@ class Photo(models.Model):
     filename = models.CharField(max_length=250)
     filedata = models.TextField(null=True, default=None)
 
+    user = models.ForeignKey('auth.User', on_delete=models.PROTECT,
+                             default=None)
+
     @property
     def storage_key(self):
         return 'cars-photos/{}/{}'.format(self.uid, self.filename)

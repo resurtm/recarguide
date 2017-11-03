@@ -78,10 +78,11 @@
       <label for="" class="col-sm-3 col-form-label">Photos/Images</label>
 
       <div class="form-group col-sm-9">
-        <input type="file" name="photos" id="sale-photos" multiple class="mt-1 mb-2">
+        <input type="file" name="photo" id="sale-photos" multiple class="mt-1 mb-2">
         <div id="sale-photos-preview" class="mt-2">
           {% for photo in photos %}
-            <div data-id="" data-ready="1" data-real-id="{{ photo.id }}">
+            <div data-local-id="" data-ready="1" data-real-id="{{ photo.id }}">
+              <i class="fa fa-times-circle" aria-hidden="true" title="Delete Photo"></i>
               <img src="{{ photo.thumb_url }}" alt="">
             </div>
           {% endfor %}

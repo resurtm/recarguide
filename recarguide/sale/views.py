@@ -10,6 +10,8 @@ from django.db import transaction
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.crypto import get_random_string
+from django.views.decorators.http import require_http_methods, require_GET, \
+    require_POST
 
 from recarguide.cars.models import Model, Category, Photo
 from recarguide.common.tools import ensure_stripe_api_key
@@ -20,11 +22,13 @@ from recarguide.sale.tools import ensure_sell_process, assert_stripe_data
 
 
 @login_required
+@require_GET
 def sale(request):
     return redirect('sale:step1')
 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 @ensure_sell_process(step=1)
 def step1(request, process):
     if request.method == 'POST':
@@ -42,6 +46,7 @@ def step1(request, process):
 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 @ensure_sell_process(step=2)
 def step2(request, process):
     if request.method == 'POST':
@@ -59,6 +64,7 @@ def step2(request, process):
 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 @ensure_sell_process(step=3)
 def step3(request, process):
     if request.method == 'POST':
@@ -76,6 +82,7 @@ def step3(request, process):
 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 @ensure_sell_process(step=4)
 @assert_stripe_data
 def step4(request, process):
@@ -95,6 +102,7 @@ def step4(request, process):
 
 
 @login_required
+@require_GET
 @ensure_sell_process(step=5)
 def step5(request, process):
     process.finished = True
@@ -103,29 +111,43 @@ def step5(request, process):
 
 
 @login_required
+@require_GET
 def fetch_models(request, make_id):
     return JsonResponse({m.pk: m.name
                          for m in Model.objects.filter(make_id=make_id)})
 
 
 @login_required
+@require_GET
 def fetch_categories(request, category_id):
     r = {c.pk: c.name for c in Category.objects.filter(parent_id=category_id)}
     return JsonResponse(r)
 
 
 @login_required
+@require_POST
 @ensure_sell_process(step=2)
-def photos_upload(request, process):
-    if request.method == 'POST' and 'photos' in request.FILES:
-        uid, file = get_random_string(16), request.FILES['photos']
-        path = os.path.join(settings.MEDIA_ROOT,
-                            FileSystemStorage().save(uid, file))
-        with open(path, 'rb') as fp:
-            data = fp.read()
-        os.remove(path)
-        photo = Photo(sell_process=process, uid=uid, filename=file.name,
-                      filedata=base64.standard_b64encode(data))
-        photo.save()
-        process_photo.delay(photo.id)
+def upload_photo(request, process):
+    if 'photo' not in request.FILES:
+        return HttpResponse('')
+    uid, file = get_random_string(16), request.FILES['photo']
+    path = os.path.join(settings.MEDIA_ROOT,
+                        FileSystemStorage().save(uid, file))
+    with open(path, 'rb') as fp:
+        data = fp.read()
+    os.remove(path)
+    photo = Photo(sell_process=process, uid=uid, filename=file.name,
+                  filedata=base64.standard_b64encode(data),
+                  user=request.user)
+    photo.save()
+    process_photo.delay(photo.id)
+    return HttpResponse(photo.id)
+
+
+@login_required
+@require_POST
+def delete_photo(request):
+    photo = Photo.objects.filter(pk=int(request.POST.get('id', '0')),
+                                 user=request.user)
+    photo.delete()
     return HttpResponse('')
