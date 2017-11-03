@@ -53,12 +53,19 @@ class Car(models.Model):
     def __str__(self):
         return '{name} {slug}'.format(name=self.name, slug=self.slug)
 
+    @property
+    def full_category_name(self):
+        if not self.category.parent_id:
+            return self.category.name
+        return '{}, {}'.format(self.category.parent.name, self.category.name)
+
 
 class Photo(models.Model):
     sell_process = models.ForeignKey('sale.SellProcess',
-                                     on_delete=models.PROTECT, default=None)
+                                     on_delete=models.PROTECT, default=None,
+                                     related_name='photos')
     car = models.ForeignKey('Car', on_delete=models.PROTECT, null=True,
-                            default=None)
+                            default=None, related_name='photos')
 
     ready = models.BooleanField(default=False)
     uid = models.CharField(max_length=16)

@@ -104,10 +104,10 @@ class SaleContactForm(ModelForm):
         model = Contact
         fields = ['first_name', 'last_name', 'address', 'address2', 'city',
                   'phone', 'contact_method', 'zip']
-        labels = {
-            'address2': 'Address (additional)',
-            'contact_method': 'Contact Method',
-        }
+        labels = {'address2': 'Address (additional)',
+                  'contact_method': 'Contact Method',
+                  'first_name': 'First Name',
+                  'last_name': 'Last Name'}
 
     def __init__(self, *args, **kwargs):
         super(SaleContactForm, self).__init__(*args, **kwargs)

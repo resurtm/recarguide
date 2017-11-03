@@ -105,8 +105,8 @@ def step4(request, process):
 @require_GET
 @ensure_sell_process(step=5)
 def step5(request, process):
-    process.finished = True
-    process.save()
+    # process.finished = True
+    # process.save()
     return render(request, 'sale/step5.html')
 
 
