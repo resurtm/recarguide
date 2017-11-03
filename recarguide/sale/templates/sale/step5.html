@@ -8,6 +8,18 @@
   <div class="row sale-step">
     <div class="col-lg-10 mr-auto ml-auto">
       {% progress_bar 5 %}
+
+      <div class="text-center my-5">
+        <p><strong>Great!</strong></p>
+        <p>You've finished submitting your listing.
+          Now press the button below in order to publish your listing at the site.</p>
+
+        <form action="{% url 'sale:step5' %}" method="post" class="my-5">
+          {% csrf_token %}
+          <input type="hidden" name="confirm" value="yes">
+          <button type="submit" class="btn btn-success btn-lg pl-5 pr-5">Publish My Listing</button>
+        </form>
+      </div>
     </div>
   </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.contrib.postgres.fields import JSONField
 from django.db import models
+from django.db import transaction
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
@@ -45,6 +46,14 @@ class SellProcess(models.Model):
     def __str__(self):
         return 'User ID: {uid}, car ID: {cid}'.format(uid=self.user_id,
                                                       cid=self.car_id)
+
+    def publish(self):
+        with transaction.atomic():
+            for photo in self.photos.all():
+                photo.car_id = self.car.id
+                photo.save()
+            self.finished = True
+            self.save()
 
 
 class Contact(models.Model):

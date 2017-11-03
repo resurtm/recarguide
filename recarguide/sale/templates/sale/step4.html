@@ -38,7 +38,6 @@
             <p class="mt-4">Click the button below to pay for your listing:</p>
             <form action="{% url 'sale:step4' %}" method="post" id="sale-payment-form" class="my-5">
               {% csrf_token %}
-
               <script src="https://checkout.stripe.com/checkout.js"
                       class="stripe-button"
                       data-key="{{ STRIPE_PUBLISHABLE_KEY }}"

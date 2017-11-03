@@ -103,11 +103,12 @@ def step4(request, process):
 
 
 @login_required
-@require_GET
+@require_http_methods(['GET', 'POST'])
 @ensure_sell_process(step=5)
 def step5(request, process):
-    # process.finished = True
-    # process.save()
+    if request.method == 'POST' and request.POST.get('confirm') == 'yes':
+        process.publish()
+        return redirect('cars:view', slug=process.car.slug, id=process.car.id)
     return render(request, 'sale/step5.html')
 
 
