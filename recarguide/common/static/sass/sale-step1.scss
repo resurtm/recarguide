@@ -21,12 +21,20 @@
     margin-left: (-(150px / 2));
     left: 50%;
   }
-  button {
+
+  .cannot-change, button {
     position: absolute;
     left: 50%;
-    cursor: pointer;
     width: 130px;
     margin-left: (-(130px / 2));
+  }
+  .cannot-change {
+    bottom: 30px;
+    opacity: 0.5;
+    font-style: italic;
+  }
+  button {
+    cursor: pointer;
     bottom: 40px;
     &.btn-lg {
       width: 160px;

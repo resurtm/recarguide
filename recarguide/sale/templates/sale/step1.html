@@ -34,14 +34,22 @@
                   Max Photos: <strong>{{ plan.max_photos }}</strong>
                 </p>
 
-                {% if plan.primary %}
-                  <button type="button" class="btn btn-primary btn-lg" data-id="{{ plan.id }}">
-                    Select
-                  </button>
+                {% if process.package_plan and process.package_plan.id != plan.id %}
+                  <small class="cannot-change">
+                    <nobr>(cannot change the plan,</nobr>
+                    <nobr>because you've already</nobr>
+                    <nobr>paid for this ad)</nobr>
+                  </small>
                 {% else %}
-                  <button type="button" class="btn btn-outline-primary" data-id="{{ plan.id }}">
-                    Select
-                  </button>
+                  {% if plan.primary %}
+                    <button type="button" class="btn btn-primary btn-lg" data-id="{{ plan.id }}">
+                      Select
+                    </button>
+                  {% else %}
+                    <button type="button" class="btn btn-outline-primary" data-id="{{ plan.id }}">
+                      Select
+                    </button>
+                  {% endif %}
                 {% endif %}
               </div>
             </div>

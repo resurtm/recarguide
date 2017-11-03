@@ -32,11 +32,12 @@ def sale(request):
 @ensure_sell_process(step=1)
 def step1(request, process):
     if request.method == 'POST':
-        try:
-            plan_id = request.POST.get('package_plan_id', '0')
-            process.package_plan = PackagePlan.objects.get(id=int(plan_id))
-        except:
-            raise SuspiciousOperation('Cannot find the package plan')
+        if not process.package_plan:
+            try:
+                plan_id = request.POST.get('package_plan_id', '0')
+                process.package_plan = PackagePlan.objects.get(id=int(plan_id))
+            except:
+                raise SuspiciousOperation('Cannot find the package plan')
         process.step = process.step if process.step > 2 else 2
         process.save()
         return redirect('sale:step2')
