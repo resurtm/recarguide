@@ -4,9 +4,10 @@ import os
 import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import SuspiciousOperation
 from django.core.files.storage import FileSystemStorage
 from django.db import transaction
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.crypto import get_random_string
 
@@ -27,8 +28,11 @@ def sale(request):
 @ensure_sell_process(step=1)
 def step1(request, process):
     if request.method == 'POST':
-        plan_id = request.POST.get('package_plan_id')
-        process.package_plan = PackagePlan.objects.get(id=int(plan_id))
+        try:
+            plan_id = request.POST.get('package_plan_id', '0')
+            process.package_plan = PackagePlan.objects.get(id=int(plan_id))
+        except:
+            raise SuspiciousOperation('Cannot find the package plan')
         process.step = process.step if process.step > 2 else 2
         process.save()
         return redirect('sale:step2')
@@ -100,37 +104,28 @@ def step5(request, process):
 
 @login_required
 def fetch_models(request, make_id):
-    models = Model.objects.filter(make_id=make_id)
-    result = {}
-    for model in models:
-        result[model.pk] = model.name
-    return JsonResponse(result)
+    return JsonResponse({m.pk: m.name
+                         for m in Model.objects.filter(make_id=make_id)})
 
 
 @login_required
 def fetch_categories(request, category_id):
-    models = Category.objects.filter(parent_id=category_id)
-    result = {}
-    for model in models:
-        result[model.pk] = model.name
-    return JsonResponse(result)
+    r = {c.pk: c.name for c in Category.objects.filter(parent_id=category_id)}
+    return JsonResponse(r)
 
 
 @login_required
 @ensure_sell_process(step=2)
 def photos_upload(request, process):
     if request.method == 'POST' and 'photos' in request.FILES:
-        file = request.FILES['photos']
-        uid = get_random_string(16)
-        filename = FileSystemStorage().save(uid, file)
-        filepath = os.path.join(settings.MEDIA_ROOT, filename)
-        with open(filepath, 'rb') as fp:
-            filedata = fp.read()
-        os.remove(filepath)
-        photo = Photo(sell_process=process,
-                      uid=uid,
-                      filename=file.name,
-                      filedata=base64.standard_b64encode(filedata))
+        uid, file = get_random_string(16), request.FILES['photos']
+        path = os.path.join(settings.MEDIA_ROOT,
+                            FileSystemStorage().save(uid, file))
+        with open(path, 'rb') as fp:
+            data = fp.read()
+        os.remove(path)
+        photo = Photo(sell_process=process, uid=uid, filename=file.name,
+                      filedata=base64.standard_b64encode(data))
         photo.save()
         process_photo.delay(photo.id)
-    return JsonResponse({})
+    return HttpResponse('')

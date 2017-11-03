@@ -1,4 +1,4 @@
-import boto3
+import boto3 as b3
 import stripe
 from django.conf import settings
 from django.core.paginator import Paginator
@@ -8,8 +8,8 @@ def ensure_stripe_api_key():
     stripe.api_key = settings.STRIPE['SECRET_KEY']
 
 
-def boto3_client():
-    return boto3.client(
+def boto3():
+    return b3.client(
         's3',
         aws_access_key_id=settings.AWS_S3_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_S3_SECRET_ACCESS_KEY,

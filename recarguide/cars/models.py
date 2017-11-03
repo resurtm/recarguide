@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save, pre_delete
 from django.utils.text import slugify
 
-from recarguide.common.tools import boto3_client
+from recarguide.common.tools import boto3
 
 
 class Category(models.Model):
@@ -66,28 +66,25 @@ class Photo(models.Model):
     filedata = models.TextField(null=True, default=None)
 
     @property
-    def s3_key(self):
-        return 'cars-photos/{dir}/{fn}'.format(dir=self.uid,
-                                               fn=self.filename)
+    def storage_key(self):
+        return 'cars-photos/{}/{}'.format(self.uid, self.filename)
 
     @property
-    def s3_key_thumb(self):
-        return 'cars-photos/{dir}/thumb_{fn}'.format(dir=self.uid,
-                                                     fn=self.filename)
+    def thumb_storage_key(self):
+        return 'cars-photos/{}/thumb_{}'.format(self.uid, self.filename)
 
     @property
-    def original_url(self):
-        pattern = '//s3.{region}.amazonaws.com/{bucket}/{key}'
-        return pattern.format(region=settings.AWS_S3_REGION_NAME,
-                              bucket=settings.AWS_S3_BUCKET_NAME,
-                              key=self.s3_key)
+    def url(self):
+        tpl = '//s3.{}.amazonaws.com/{}/{}'
+        return tpl.format(settings.AWS_S3_REGION_NAME,
+                          settings.AWS_S3_BUCKET_NAME, self.storage_key)
 
     @property
     def thumb_url(self):
-        pattern = '//s3.{region}.amazonaws.com/{bucket}/{key}'
-        return pattern.format(region=settings.AWS_S3_REGION_NAME,
-                              bucket=settings.AWS_S3_BUCKET_NAME,
-                              key=self.s3_key_thumb)
+        tpl = '//s3.{}.amazonaws.com/{}/{}'
+        return tpl.format(settings.AWS_S3_REGION_NAME,
+                          settings.AWS_S3_BUCKET_NAME,
+                          self.thumb_storage_key)
 
 
 def pre_save_category_receiver(instance, *args, **kwargs):
@@ -111,10 +108,10 @@ def pre_save_car_receiver(instance, *args, **kwargs):
 
 
 def pre_delete_photo_receiver(instance, *args, **kwargs):
-    boto3_client().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
-                                 Key=instance.s3_key)
-    boto3_client().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
-                                 Key=instance.s3_key_thumb)
+    boto3().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
+                          Key=instance.storage_key)
+    boto3().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
+                          Key=instance.thumb_storage_key)
 
 
 pre_save.connect(pre_save_category_receiver, sender=Category)

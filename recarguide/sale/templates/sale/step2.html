@@ -5,11 +5,11 @@
 {% block title %}Step 2, {{ block.super }}{% endblock %}
 
 {% block content %}
-    <div class="row sale-step">
-        <div class="col-lg-10 mr-auto ml-auto">
-            {% progress_bar 2 %}
+  <div class="row sale-step">
+    <div class="col-lg-10 mr-auto ml-auto">
+      {% progress_bar 2 %}
 
-            {% include 'sale/step2-form.html' with form=form photos=photos %}
-        </div>
+      {% include 'sale/step2_form.html' with form=form photos=photos %}
     </div>
+  </div>
 {% endblock %}

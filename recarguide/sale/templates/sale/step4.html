@@ -5,32 +5,32 @@
 {% block title %}Step 4, {{ block.super }}{% endblock %}
 
 {% block content %}
-    <div class="row sale-step">
-        <div class="col-lg-10 mr-auto ml-auto">
-            {% progress_bar 4 %}
+  <div class="row sale-step">
+    <div class="col-lg-10 mr-auto ml-auto">
+      {% progress_bar 4 %}
 
-            {% if process.payment is None %}
-                <form action="{% url 'sale:step4' %}" method="post" id="sale-payment-form">
-                    {% csrf_token %}
+      {% if process.payment is None %}
+        <form action="{% url 'sale:step4' %}" method="post" id="sale-payment-form">
+          {% csrf_token %}
 
-                    <script src="https://checkout.stripe.com/checkout.js"
-                            class="stripe-button"
-                            data-key="{{ STRIPE_PUBLISHABLE_KEY }}"
-                            data-amount="{{ process.package_plan.stripe_price }}"
-                            data-currency="usd"
-                            data-label="Pay with Card (Stripe)"
-                            data-name="ReCarGuide"
-                            data-description="Payment for your listing publish"
-                            data-image="/static/img/logo-stripe.png"
-                            data-locale="auto"
-                            data-zip-code="true"></script>
-                </form>
-            {% else %}
-                <p>You have successfully paid for the listing, just proceed to the step #5 for now.</p>
-                <form action="{% url 'sale:step5' %}" method="get">
-                    <button type="submit" class="btn btn-danger btn-lg pl-5 pr-5">Next</button>
-                </form>
-            {% endif %}
-        </div>
+          <script src="https://checkout.stripe.com/checkout.js"
+                  class="stripe-button"
+                  data-key="{{ STRIPE_PUBLISHABLE_KEY }}"
+                  data-amount="{{ process.package_plan.stripe_price }}"
+                  data-currency="usd"
+                  data-label="Pay with Card (Stripe)"
+                  data-name="ReCarGuide"
+                  data-description="Payment for your listing publish"
+                  data-image="/static/img/logo-stripe.png"
+                  data-locale="auto"
+                  data-zip-code="true"></script>
+        </form>
+      {% else %}
+        <p>You have successfully paid for the listing, just proceed to the step #5 for now.</p>
+        <form action="{% url 'sale:step5' %}" method="get">
+          <button type="submit" class="btn btn-danger btn-lg pl-5 pr-5">Next</button>
+        </form>
+      {% endif %}
     </div>
+  </div>
 {% endblock %}
