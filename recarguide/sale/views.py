@@ -4,7 +4,6 @@ import os
 import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import SuspiciousOperation
 from django.core.files.storage import FileSystemStorage
 from django.db import transaction
 from django.http import JsonResponse
@@ -28,9 +27,7 @@ def sale(request):
 @ensure_sell_process(step=1)
 def step1(request, process):
     if request.method == 'POST':
-        plan_id = request.POST.get('package_plan_id', '').strip()
-        if plan_id == '':
-            raise SuspiciousOperation('Invalid package plan has been specified')
+        plan_id = request.POST.get('package_plan_id')
         process.package_plan = PackagePlan.objects.get(id=int(plan_id))
         process.step = process.step if process.step > 2 else 2
         process.save()
@@ -43,7 +40,6 @@ def step1(request, process):
 @login_required
 @ensure_sell_process(step=2)
 def step2(request, process):
-    # raise SuspiciousOperation('Invalid package plan has been specified')
     if request.method == 'POST':
         form = CarSaleForm(request.POST, instance=process.car)
         if form.is_valid():
@@ -55,8 +51,7 @@ def step2(request, process):
     else:
         form = CarSaleForm(instance=process.car)
     photos = Photo.objects.filter(sell_process=process)
-    return render(request, 'sale/step2.html', {'form': form,
-                                               'photos': photos})
+    return render(request, 'sale/step2.html', {'form': form, 'photos': photos})
 
 
 @login_required

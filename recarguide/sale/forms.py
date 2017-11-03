@@ -7,7 +7,7 @@ from recarguide.sale.models import Contact
 from recarguide.sale.tools import years_choices
 
 
-def rel_or_none(instance, attr):
+def _rel_or_none(instance, attr):
     try:
         res = getattr(instance, attr)
     except ObjectDoesNotExist:
@@ -17,54 +17,25 @@ def rel_or_none(instance, attr):
 
 class CarSaleForm(ModelForm):
     year = ChoiceField(choices=years_choices())
-
     make = ModelChoiceField(queryset=Make.objects.order_by('name'),
-                            to_field_name='id',
-                            empty_label='')
+                            to_field_name='id', empty_label='')
     model = ModelChoiceField(queryset=Model.objects.none(),
-                             to_field_name='id',
-                             empty_label='')
+                             to_field_name='id', empty_label='')
 
     category = ModelChoiceField(
         queryset=Category.objects.filter(parent__isnull=True).order_by('name'),
-        to_field_name='id',
-        empty_label='')
-    subcategory = ModelChoiceField(
-        queryset=Category.objects.none(),
-        to_field_name='id',
-        empty_label='')
+        to_field_name='id', empty_label='')
+    subcategory = ModelChoiceField(queryset=Category.objects.none(),
+                                   to_field_name='id', empty_label='')
 
     class Meta:
         model = Car
         fields = ['year', 'price', 'mileage', 'description']
-        labels = {
-            'make': 'Make/Manufacturer',
-        }
+        labels = {'make': 'Make/Manufacturer'}
 
     def __init__(self, *args, **kwargs):
         super(CarSaleForm, self).__init__(*args, **kwargs)
-
-        make = rel_or_none(self.instance, 'make')
-        model = rel_or_none(self.instance, 'model')
-        if len(self.data) == 0 and make is not None and model is not None:
-            self.__setup_model_field(make)
-            self.fields['make'].initial = make
-            self.fields['model'].initial = model
-
-        category = rel_or_none(self.instance, 'category')
-        if len(self.data) == 0 and category is not None:
-            if category.parent is None:
-                self.fields['category'].initial = category
-                self.fields['subcategory'].initial = None
-            else:
-                self.__setup_subcategory_field(category.parent.id)
-                self.fields['category'].initial = category.parent
-                self.fields['subcategory'].initial = category
-
-        if len(self.data) == 0:
-            self.fields['price'].initial = None
-            self.fields['mileage'].initial = None
-
+        self.__setup_initial_state()
         if 'make' in self.data and len(self.data['make']) > 0:
             self.__setup_model_field(int(self.data['make']))
         if 'category' in self.data and len(self.data['category']) > 0:
@@ -81,6 +52,33 @@ class CarSaleForm(ModelForm):
         else:
             self.instance.category = self.cleaned_data['subcategory']
         return super(CarSaleForm, self).save(*args, **kwargs)
+
+    def __setup_initial_state(self):
+        if len(self.data) > 0:
+            return
+
+        # this is need in order to show empty price & mileage fields in case:
+        # 1. sell process is new, 2. form was not submitted
+        # without these lines we would have "0" values, not just empty fields
+        self.fields['price'].initial = None
+        self.fields['mileage'].initial = None
+
+        make = _rel_or_none(self.instance, 'make')
+        model = _rel_or_none(self.instance, 'model')
+        if make is not None and model is not None:
+            self.__setup_model_field(make)
+            self.fields['make'].initial = make
+            self.fields['model'].initial = model
+
+        category = _rel_or_none(self.instance, 'category')
+        if category is not None:
+            if category.parent is None:
+                self.fields['category'].initial = category
+                self.fields['subcategory'].initial = None
+            else:
+                self.__setup_subcategory_field(category.parent.id)
+                self.fields['category'].initial = category.parent
+                self.fields['subcategory'].initial = category
 
     def __setup_model_field(self, make):
         qs = Model.objects.filter(make_id=make)

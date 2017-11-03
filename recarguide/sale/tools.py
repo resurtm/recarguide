@@ -7,8 +7,8 @@ from recarguide.sale.models import SellProcess
 
 
 def ensure_sell_process(step):
-    def dec1(func):
-        def dec2(request, *args, **kwargs):
+    def fn1(view_fn):
+        def fn2(request, *args, **kwargs):
             try:
                 sp = SellProcess.objects.filter(user_id=request.user.id,
                                                 finished=False).get()
@@ -17,11 +17,11 @@ def ensure_sell_process(step):
                 sp.save()
             if sp.step < step:
                 return redirect('sale:step{}'.format(sp.step))
-            return func(request, sp, *args, **kwargs)
+            return view_fn(request, sp, *args, **kwargs)
 
-        return dec2
+        return fn2
 
-    return dec1
+    return fn1
 
 
 def assert_stripe_data(func):
