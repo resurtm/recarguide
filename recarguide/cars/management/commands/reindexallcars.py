@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from recarguide.cars.models import Car
-from recarguide.cars.elasticsearch import reindex_car
+from recarguide.cars.search.elastic import reindex_car
 from recarguide.common.tools import batched_iterator
 
 

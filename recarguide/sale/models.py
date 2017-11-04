@@ -4,6 +4,8 @@ from django.db import transaction
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
+from recarguide.cars.search.elastic import reindex_car
+
 CONTACT_METHODS = (
     ('e', 'Email Only'),
     ('p', 'Email & Phone'),
@@ -54,6 +56,7 @@ class SellProcess(models.Model):
                 photo.save()
             self.finished = True
             self.save()
+            reindex_car(self.car)
 
 
 class Contact(models.Model):

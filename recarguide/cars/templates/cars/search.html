@@ -4,48 +4,55 @@
 {% load breadcrumbs %}
 
 {% block after_nav_bar %}
-    {% search_bar source %}
+  {% search_bar source %}
 {% endblock %}
 
 {% block content %}
-    {% breadcrumb 'Home' 'common:home' %}
-    {% breadcrumb 'Cars for Sale' 'cars:search' %}
-    {% breadcrumbs %}
+  {% breadcrumb 'Home' 'common:home' %}
+  {% breadcrumb 'Cars for Sale' 'cars:search' %}
+  {% breadcrumbs %}
 
-    <div class="row" id="search-results">
-        <div class="col-lg-3 col-md-4 mb-4" id="search-filter">
-            <div class="card">
-                <div class="card-header">Narrow Results</div>
-                <div class="card-body">
-                    {% current_filters source %}
-                    {% facet_group 'make' source %}
-                    {% facet_group 'model' source %}
-                    {% facet_group 'category' source %}
-                    {% facet_group 'subcategory' source %}
-                    <h6 class="card-title">Year</h6>
-                    <hr>
-                    <h6 class="card-title">Price</h6>
-                    <hr>
-                    <h6 class="card-title">Options</h6>
-                    <hr>
-                    <div class="action-buttons">
-                        <a href="#" class="btn btn-primary px-4">Apply Filters</a>
-                        <a href="#" class="btn btn-inverse px-4">Clear Search</a>
-                    </div>
-                </div>
-            </div>
+  <div class="row" id="search-results">
+    <div class="col-lg-3 col-md-4 mb-4" id="search-filter">
+      <div class="card">
+        <div class="card-header">Narrow Results</div>
+        <div class="card-body">
+          {% current_filters source %}
+          {% facet_group 'make' source %}
+          {% facet_group 'model' source %}
+          {% facet_group 'category' source %}
+          {% facet_group 'subcategory' source %}
+          <h6 class="card-title">Year</h6>
+          <hr>
+          <h6 class="card-title">Price</h6>
+          <hr>
+          <h6 class="card-title">Options</h6>
+          <hr>
+          <div class="action-buttons">
+            <a href="#" class="btn btn-primary px-4">Apply Filters</a>
+            <a href="#" class="btn btn-inverse px-4">Clear Search</a>
+          </div>
         </div>
-
-        <div class="col-lg-9 col-md-8">
-            {% for car in cars %}
-                <div class="card mb-4">
-                    <div class="card-body">
-                        {{ car.name }}
-                    </div>
-                </div>
-            {% endfor %}
-
-            {% search_pagination source cars %}
-        </div>
+      </div>
     </div>
+
+    <div class="col-lg-9 col-md-8">
+      {% for car in cars %}
+        <div class="search-result-item mb-4 d-flex flex-row">
+          <div>
+            {% if car.photos.first %}
+              <img src="{{ car.photos.first.thumb_url }}" alt="{{ car.title }}">
+            {% endif %}
+          </div>
+          <div>
+            {{ car.name }}
+            <br>
+            {{ car.id }}
+          </div>
+        </div>
+      {% endfor %}
+
+      {% search_pagination source cars %}
+    </div>
+  </div>
 {% endblock %}

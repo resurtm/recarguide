@@ -46,8 +46,11 @@ def facet_group(id, source):
         return {}
 
     url = UrlBuilder(source.params)
-    items = [(value, count, url.build(**{id: value}))
-             for value, count in source.facet_counts[id]]
+    if id in source.facet_counts:
+        items = [(value, count, url.build(**{id: value}))
+                 for value, count in source.facet_counts[id]]
+    else:
+        items = []
     return {'title': name_by_id(id),
             'main_items': items[:SHORT_FACET_SIZE],
             'more_items': items[LONG_FACET_SIZE:]}

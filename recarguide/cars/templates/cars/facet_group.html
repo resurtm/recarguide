@@ -1,19 +1,22 @@
-{% if main_items %}
-    <div class="filter-group">
-        <h6 class="card-title">{{ title }}</h6>
-        <ul>
-            {% for name, count, url in main_items %}
-                <li><a href="{{ url }}">{{ name }}</a> ({{ count }})</li>
-            {% endfor %}
+{% if title %}
+  <div class="filter-group">
+    <h6 class="card-title">{{ title }}</h6>
+    {% if not main_items and not more_items %}
+      <small>(nothing found)</small>
+    {% endif %}
+    <ul>
+      {% for name, count, url in main_items %}
+        <li><a href="{{ url }}">{{ name }}</a> ({{ count }})</li>
+      {% endfor %}
 
-            {% if more_items %}
-                <li class="show-more"><a href="#">Show More +</a></li>
+      {% if more_items %}
+        <li class="show-more"><a href="#">Show More +</a></li>
 
-                {% for name, count, url in more_items %}
-                    <li hidden><a href="{{ url }}">{{ name }}</a> ({{ count }})</li>
-                {% endfor %}
-            {% endif %}
-        </ul>
-    </div>
-    <hr>
+        {% for name, count, url in more_items %}
+          <li hidden><a href="{{ url }}">{{ name }}</a> ({{ count }})</li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+  <hr>
 {% endif %}
