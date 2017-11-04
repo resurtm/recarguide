@@ -1,80 +1,90 @@
 {% load tools %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container px-3">
-        <a class="navbar-brand" href="{% url 'common:home' %}">
-            <img src="/static/img/logo.png" alt="" id="header-logo">
-            ReCarGuide
-        </a>
+  <div class="container px-3">
+    <a class="navbar-brand" href="{% url 'common:home' %}">
+      <img src="/static/img/logo.png" alt="" id="header-logo">
+      ReCarGuide
+    </a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#primaryNavbarMenu"
-                aria-controls="primaryNavbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#primaryNavbarMenu"
+            aria-controls="primaryNavbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="primaryNavbarMenu">
-            <ul class="navbar-nav mr-auto">
-                {% cv 'cars:search' is_active %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'cars:search' %}">
-                            Buy
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                {% endcv %}
-                {% cv 'cars:search' is_inactive %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cars:search' %}">Buy</a>
-                    </li>
-                {% endcv %}
+    <div class="collapse navbar-collapse" id="primaryNavbarMenu">
+      <ul class="navbar-nav mr-auto">
+        {% cv 'cars:search' is_active %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'cars:search' %}">
+              Buy
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        {% endcv %}
+        {% cv 'cars:search' is_inactive %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cars:search' %}">Buy</a>
+          </li>
+        {% endcv %}
 
-                {% cv 'sale:step*' is_active %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'sale:step1' %}">
-                            Sell
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                {% endcv %}
-                {% cv 'sale:step*' is_inactive %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'sale:step1' %}">Sell</a>
-                    </li>
-                {% endcv %}
+        {% cv 'sale:step*' is_active %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'sale:step1' %}">
+              Sell
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        {% endcv %}
+        {% cv 'sale:step*' is_inactive %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sale:step1' %}">Sell</a>
+          </li>
+        {% endcv %}
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="researchDropdown"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Research</a>
-                    <div class="dropdown-menu" aria-labelledby="researchDropdown">
-                        <a class="dropdown-item" href="#">Manufacturers</a>
-                        <a class="dropdown-item" href="#">Dealers</a>
-                    </div>
-                </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="researchDropdown"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Research</a>
+          <div class="dropdown-menu" aria-labelledby="researchDropdown">
+            <a class="dropdown-item" href="#">Manufacturers</a>
+            <a class="dropdown-item" href="#">Dealers</a>
+          </div>
+        </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
-                </li>
-            </ul>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact Us</a>
+        </li>
+      </ul>
 
-            <ul class="navbar-nav ml-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Hi, <strong>{{ user.username }}</strong>!</a>
-                    </li>
+      <ul class="navbar-nav ml-auto">
+        {% if user.is_authenticated %}
+          {% cv 'cabinet:index' is_active %}
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'cabinet:index' %}">
+                Hi, <strong>{{ user.username }}</strong>!
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+          {% endcv %}
+          {% cv 'cabinet:index' is_inactive %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'cabinet:index' %}">Hi, <strong>{{ user.username }}</strong>!</a>
+            </li>
+          {% endcv %}
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auth:logout' %}">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auth:login' %}">Sign In</a>
-                    </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'auth:logout' %}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'auth:login' %}">Sign In</a>
+          </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auth:signup' %}">Create Account</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'auth:signup' %}">Create Account</a>
+          </li>
+        {% endif %}
+      </ul>
     </div>
+  </div>
 </nav>

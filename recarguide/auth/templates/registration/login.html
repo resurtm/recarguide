@@ -1,46 +1,46 @@
 {% extends 'common/layout/main.html' %}
 
 {% block content %}
-    <div class="row auth-common-form">
-        <div class="col-sm-8 col-md-4 mr-auto ml-auto">
+  <div class="row auth-common-form">
+    <div class="col-sm-8 col-md-4 mr-auto ml-auto">
 
-            <h1 class="mb-4">Log Into Account</h1>
+      <h1 class="mb-4">Log Into Account</h1>
 
-            {% if form.errors %}
-                <p>Your username and password didn't match. Please try again.</p>
-            {% endif %}
+      {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+      {% endif %}
 
-            {% if next %}
-                {% if user.is_authenticated %}
-                    <p>Your account doesn't have access to this page.
-                        To proceed, please login with an account that has access.</p>
-                {% else %}
-                    <p>Please login to see this page.</p>
-                {% endif %}
-            {% endif %}
+      {% if next %}
+        {% if user.is_authenticated %}
+          <p>Your account doesn't have access to this page.
+            To proceed, please login with an account that has access.</p>
+        {% else %}
+          <p>Please login to see this page.</p>
+        {% endif %}
+      {% endif %}
 
-            <form method="post" action="{% url 'auth:login' %}">
-                {% csrf_token %}
+      <form method="post" action="{% url 'auth:login' %}">
+        {% csrf_token %}
 
-                <div class="form-group">
-                    {{ form.username.label_tag }}
-                    {{ form.username }}
-                    <small id="login-form-username-help" class="form-text text-muted">
-                        Enter username you have used when signed up
-                    </small>
-                </div>
-
-                <div class="form-group">
-                    {{ form.password.label_tag }}
-                    {{ form.password }}
-                </div>
-
-                <button type="submit" class="btn btn-primary">Sign In</button>
-                <input type="hidden" name="next" value="{{ next }}">
-            </form>
-
-            <p class="mt-4"><a href="{% url 'auth:password_reset' %}">Lost password?</a></p>
-
+        <div class="form-group">
+          {{ form.username.label_tag }}
+          {{ form.username }}
+          <small id="login-form-username-help" class="form-text text-muted">
+            Enter username you have used when signed up
+          </small>
         </div>
+
+        <div class="form-group">
+          {{ form.password.label_tag }}
+          {{ form.password }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Sign In</button>
+        <input type="hidden" name="next" value="{{ next }}">
+      </form>
+
+      <p class="mt-4"><a href="{% url 'auth:password_reset' %}">Lost password?</a></p>
+
     </div>
+  </div>
 {% endblock %}

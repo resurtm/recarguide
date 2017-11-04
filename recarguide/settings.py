@@ -19,7 +19,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'recarguide.auth.apps.AuthConfig',
     'recarguide.cars.apps.CarsConfig',
     'recarguide.sale.apps.SaleConfig',
+    'recarguide.cabinet.apps.CabinetConfig',
 ]
 INSTALLED_APPS += local.INSTALLED_APPS
 
@@ -111,6 +112,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'recarguide', 'common', 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/cabinet/'
 
 STRIPE = local.STRIPE
 
