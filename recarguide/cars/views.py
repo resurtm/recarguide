@@ -9,9 +9,7 @@ from recarguide.cars.search import QueryBuilder, CarSource, PAGE_SIZE, \
 
 def view(request, slug, id):
     try:
-        car = Car.objects.get(id=id)
-        if car.slug != slug:
-            raise Car.DoesNotExist()
+        car = Car.objects.find_by_id_and_slug(id, slug)
     except Car.DoesNotExist:
         raise Http404('Requested car does not exist')
     return render(request, 'cars/view.html', {'car': car})

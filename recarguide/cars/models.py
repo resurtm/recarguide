@@ -35,7 +35,17 @@ class Model(models.Model):
         return '{name} {slug}'.format(name=self.name, slug=self.slug)
 
 
+class CarManager(models.Manager):
+    def find_by_id_and_slug(self, id, slug):
+        car = Car.objects.get(id=id)
+        if car.slug != slug:
+            raise Car.DoesNotExist()
+        return car
+
+
 class Car(models.Model):
+    objects = CarManager()
+
     name = models.CharField(max_length=250, default='')
     slug = models.SlugField(max_length=250, default='')
 
