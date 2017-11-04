@@ -29,7 +29,7 @@ class Command(BaseCommand):
         pat2 = "    ({idx}, '{name}', '{code}', '{isd}', '{c1}', '{c2}'),\n"
 
         countries_fn = ('def get_countries(include_empty=True):\n'
-                        '    result = list(countries)\n'
+                        '    result = [(c, n) for __, n, c, __, __, __ in full_countries]\n'
                         '    if include_empty:\n'
                         '        result.insert(0, (None, ""))\n'
                         '    return result\n')

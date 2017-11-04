@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from recarguide.cars.elasticsearch import delete_indices, ensure_indices
+from recarguide.cars.search.elastic import delete_indices, ensure_indices
 
 
 class Command(BaseCommand):

@@ -68,8 +68,9 @@ def step2(request, process):
 @require_http_methods(['GET', 'POST'])
 @ensure_sell_process(step=3)
 def step3(request, process):
+    contact = process.contact if hasattr(process, 'contact') else None
     if request.method == 'POST':
-        form = SaleContactForm(request.POST, instance=process.contacts.first())
+        form = SaleContactForm(request.POST, instance=contact)
         if form.is_valid():
             with transaction.atomic():
                 form.instance.sell_process = process
@@ -78,7 +79,7 @@ def step3(request, process):
                 process.save()
             return redirect('sale:step4')
     else:
-        form = SaleContactForm(instance=process.contacts.first())
+        form = SaleContactForm(instance=contact)
     return render(request, 'sale/step3.html', {'form': form})
 
 

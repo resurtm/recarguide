@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form action="{% url 'sale:step3' %}" method="post" id="listing-form">
+<form action="{% url 'sale:step3' %}" method="post" id="listing-contact-form">
   {% csrf_token %}
 
   {% with WIDGET_ERROR_CLASS='is-invalid' %}

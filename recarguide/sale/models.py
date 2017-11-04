@@ -35,8 +35,8 @@ class PackagePlan(models.Model):
 class SellProcess(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.PROTECT,
                              default=None)
-    car = models.ForeignKey('cars.Car', on_delete=models.PROTECT, null=True,
-                            default=None)
+    car = models.OneToOneField('cars.Car', on_delete=models.PROTECT, null=True,
+                               default=None)
 
     step = models.PositiveSmallIntegerField(default=1)
     package_plan = models.ForeignKey('PackagePlan', on_delete=models.PROTECT,
@@ -52,16 +52,20 @@ class SellProcess(models.Model):
     def publish(self):
         with transaction.atomic():
             for photo in self.photos.all():
-                photo.car_id = self.car.id
+                photo.car = self.car
                 photo.save()
+            self.contact.car = self.car
+            self.contact.save()
             self.finished = True
             self.save()
-            reindex_car(self.car)
+        reindex_car(self.car)
 
 
 class Contact(models.Model):
-    sell_process = models.ForeignKey('SellProcess', on_delete=models.PROTECT,
-                                     default=None, related_name='contacts')
+    sell_process = models.OneToOneField('SellProcess', on_delete=models.PROTECT,
+                                        default=None, related_name='contact')
+    car = models.OneToOneField('cars.Car', on_delete=models.PROTECT, null=True,
+                               default=None, related_name='contact')
 
     first_name = models.CharField(max_length=50, default='')
     last_name = models.CharField(max_length=50, default='')

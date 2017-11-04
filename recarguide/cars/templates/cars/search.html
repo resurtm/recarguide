@@ -39,15 +39,19 @@
     <div class="col-lg-9 col-md-8">
       {% for car in cars %}
         <div class="search-result-item mb-4 d-flex flex-row">
-          <div>
-            {% if car.photos.first %}
-              <img src="{{ car.photos.first.thumb_url }}" alt="{{ car.title }}">
-            {% endif %}
-          </div>
-          <div>
-            {{ car.name }}
-            <br>
-            {{ car.id }}
+          {% if car.photos.first %}
+            <a href="{% url 'cars:view' id=car.id slug=car.slug %}">
+              <img src="{{ car.photos.first.thumb_url }}" alt="{{ car.name }}" title="{{ car.name }}">
+            </a>
+          {% endif %}
+          <div class="p-3">
+            <a href="{% url 'cars:view' id=car.id slug=car.slug %}" title="{{ car.name }}">
+              <h4>{{ car.name }}</h4>
+            </a>
+            <p>
+              <strong>${{ car.price }}</strong>
+              {{ car.sellprocess.contact }}
+            </p>
           </div>
         </div>
       {% endfor %}
