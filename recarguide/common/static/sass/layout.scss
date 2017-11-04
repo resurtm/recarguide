@@ -3,3 +3,13 @@
   top: -2px;
   margin-right: 7px;
 }
+
+::selection {
+  background: red;
+  color: white;
+}
+
+::-moz-selection {
+  background: red;
+  color: white;
+}

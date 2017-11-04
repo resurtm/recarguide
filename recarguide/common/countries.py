@@ -351,7 +351,8 @@ full_countries = [
     (109, 'Kazakhstan', 'KZ', '7', 'KZT', '&#1083;&#1074;'),
     (110, 'Kenya', 'KE', '254', 'KES', 'Sh'),
     (111, 'Kiribati', 'KI', '686', 'AUD', '&#36;'),
-    (112, 'Korea, Democratic People\'s Republic of', 'KP', '850', 'KPW', '&#8361;'),
+    (112, 'Korea, Democratic People\'s Republic of', 'KP', '850', 'KPW',
+     '&#8361;'),
     (113, 'Korea, Republic of', 'KR', '82', 'KRW', '&#8361;'),
     (114, 'Kuwait', 'KW', '965', 'KWD', 'د.ك'),
     (115, 'Kyrgyzstan', 'KG', '996', 'KGS', '&#1083;&#1074;'),
@@ -484,3 +485,9 @@ def get_countries(include_empty=True):
     if include_empty:
         result.insert(0, (None, ""))
     return result
+
+
+def get_country_by_code(code):
+    for country in full_countries:
+        if country[2] == code:
+            return country

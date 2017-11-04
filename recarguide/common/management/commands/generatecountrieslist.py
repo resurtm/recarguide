@@ -33,6 +33,10 @@ class Command(BaseCommand):
                         '    if include_empty:\n'
                         '        result.insert(0, (None, ""))\n'
                         '    return result\n')
+        get_country_fn = ('def get_country_by_code(code):\n'
+                          '    for country in full_countries:\n'
+                          '        if country[2] == code:\n'
+                          '            return country\n')
 
         with open(out_path, 'w') as fp:
             fp.write('# id, name\n')
@@ -54,5 +58,7 @@ class Command(BaseCommand):
                                      c1=c1, c2=c2))
             fp.write(']\n\n\n')
             fp.write(countries_fn)
+            fp.write('\n\n')
+            fp.write(get_country_fn)
 
         self.stdout.write(self.style.SUCCESS('Done!'))

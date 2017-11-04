@@ -5,6 +5,7 @@ from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
 from recarguide.cars.search.elastic import reindex_car
+from recarguide.common.countries import get_country_by_code
 
 CONTACT_METHODS = (
     ('e', 'Email Only'),
@@ -80,8 +81,12 @@ class Contact(models.Model):
     contact_method = models.CharField(max_length=1, default='')
 
     def __str__(self):
-        return '{fn} {ln}'.format(fn=self.first_name,
-                                  ln=self.last_name)
+        return '{fn} {ln}'.format(fn=self.first_name, ln=self.last_name)
+
+    @property
+    def location_name(self):
+        country = get_country_by_code(self.country)
+        return '{}, {}'.format(self.city, country[1])
 
 
 def pre_save_package_plan_receiver(instance, *args, **kwargs):
