@@ -23,10 +23,8 @@
           {% facet_group 'model' source %}
           {% facet_group 'category' source %}
           {% facet_group 'subcategory' source %}
-          <h6 class="card-title">Year</h6>
-          <hr>
-          <h6 class="card-title">Price</h6>
-          <hr>
+          {% ranged_facet_group 'year' source %}
+          {% ranged_facet_group 'price' source %}
           <h6 class="card-title">Options</h6>
           <hr>
           <div class="action-buttons">

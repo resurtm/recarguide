@@ -56,6 +56,12 @@ def facet_group(id, source):
             'more_items': items[LONG_FACET_SIZE:]}
 
 
+@register.inclusion_tag('cars/ranged_facet_group.html')
+def ranged_facet_group(id, source):
+    min_max = source.facet_ranges[id]
+    return {'title': name_by_id(id), 'min': min_max[0], 'max': min_max[1]}
+
+
 @register.inclusion_tag('cars/search_pagination.html')
 def search_pagination(source, cars):
     if not cars.has_other_pages():

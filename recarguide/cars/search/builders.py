@@ -144,8 +144,9 @@ class QueryBuilder(object):
     def _build_aggregations(self, type=QUERY_TYPE_SELECT):
         if type == QUERY_TYPE_COUNT:
             return {}
-        result = {
-            id: {'terms': {'field': id, 'size': LONG_FACET_SIZE}}
-            for id in FACET_COUNT_PARAMS
-        }
-        return {'aggregations': result} if result else {}
+        res1 = {id: {'terms': {'field': id, 'size': LONG_FACET_SIZE}}
+                for id in FACET_COUNT_PARAMS}
+        res2 = {'min_' + id: {'min': {'field': id}} for id in RANGED_PARAMS}
+        res3 = {'max_' + id: {'max': {'field': id}} for id in RANGED_PARAMS}
+        res = {**res1, **res2, **res3}
+        return {'aggregations': res} if res else {}

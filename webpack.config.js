@@ -11,7 +11,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(scss|css)$/,
         use: ExtractTextPlugin.extract({
           use: [
             /*{loader: 'style-loader', options: {sourceMap: true}},*/

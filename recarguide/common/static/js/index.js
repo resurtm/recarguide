@@ -1,9 +1,13 @@
 require('bootstrap-loader');
 require('font-awesome/scss/font-awesome.scss');
+require('jquery-ui/themes/base/slider.css');
+require('jquery-ui/themes/base/theme.css');
 
 require('../sass/main.scss');
 
-require('imports-loader?define=>false!jquery-ui/ui/widget.js');
+require('jquery-ui/ui/widget');
+require('jquery-ui/ui/widgets/slider');
+
 require('imports-loader?define=>false!blueimp-load-image/js/load-image.all.min.js');
 require('imports-loader?define=>false!blueimp-canvas-to-blob/js/canvas-to-blob.js');
 require('imports-loader?define=>false!blueimp-file-upload/js/jquery.iframe-transport.js');

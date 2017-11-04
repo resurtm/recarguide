@@ -1,6 +1,6 @@
 from recarguide.cars.models import Car
 from recarguide.cars.search.builders import QUERY_TYPE_COUNT, \
-    QUERY_TYPE_SELECT, FACET_COUNT_PARAMS, PARAMS
+    QUERY_TYPE_SELECT, FACET_COUNT_PARAMS, RANGED_PARAMS
 from recarguide.cars.search.elastic import search_cars
 
 
@@ -10,6 +10,7 @@ class CarSource:
         self._count = None
 
         self.facet_counts = {}
+        self.facet_ranges = {}
         self.params = self._qb.params
 
     def __len__(self):
@@ -26,6 +27,11 @@ class CarSource:
             self.facet_counts[id] = []
             for b in aggrs[id]['buckets']:
                 self.facet_counts[id].append((b['key'], b['doc_count']))
+        for id in RANGED_PARAMS:
+            if 'min_' + id not in aggrs or 'max_' + id not in aggrs:
+                continue
+            self.facet_ranges[id] = int(aggrs['min_' + id]['value']), \
+                                    int(aggrs['max_' + id]['value'])
 
         ids = [int(car['_id']) for car in res['hits']['hits']]
         return Car.objects.filter(pk__in=ids)
