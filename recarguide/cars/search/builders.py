@@ -104,10 +104,10 @@ class QueryBuilder(object):
             val = str(params.get(key, '')).strip()
             self.params[id] = conv(val) if val else None
 
-    def build(self, offset=0, limit=PAGE_SIZE, type='query'):
+    def build(self, offset=0, limit=PAGE_SIZE, type='query', wo_ranges=False):
         assert type in query_types()
         return {**self._build_offset_limit(offset, limit),
-                **self._build_condition(type),
+                **self._build_condition(type, wo_ranges),
                 **self._build_aggregations(type)}
 
     def _build_offset_limit(self, offset, limit):
@@ -118,26 +118,27 @@ class QueryBuilder(object):
             res['size'] = limit
         return res
 
-    def _build_condition(self, type=QUERY_TYPE_SELECT):
-        must = self._build_must()
+    def _build_condition(self, type=QUERY_TYPE_SELECT, wo_ranges=False):
+        must = self._build_must(wo_ranges)
         res = {'bool': {'must': must}} if must else {'match_all': {}}
         return {QUERY_TYPE_FILTER if type == QUERY_TYPE_COUNT else type: res}
 
-    def _build_must(self):
+    def _build_must(self, wo_ranges=False):
         must = []
         if self.params['keyword']:
             must.append({'match_phrase': {'_all': self.params['keyword']}})
         for id in FACET_COUNT_PARAMS:
             if id in self.params and self.params[id]:
                 must.append({'term': {id: self.params[id]}})
-        for id in RANGED_PARAMS:
-            if id in self.params and self.params[id]:
-                v = self.params[id]
-                must.append({
-                    'range': {
-                        id: {'gte': v[0], 'lte': v[1]},
-                    },
-                })
+        if not wo_ranges:
+            for id in RANGED_PARAMS:
+                if id in self.params and self.params[id]:
+                    v = self.params[id]
+                    must.append({
+                        'range': {
+                            id: {'gte': v[0], 'lte': v[1]},
+                        },
+                    })
         # todo: has picture only, include sold listings
         return must
 
@@ -150,3 +151,20 @@ class QueryBuilder(object):
         res3 = {'max_' + id: {'max': {'field': id}} for id in RANGED_PARAMS}
         res = {**res1, **res2, **res3}
         return {'aggregations': res} if res else {}
+
+
+def build_hidden_fields(source, include_keyword=True, include_ranges=True):
+    tpl = '<input type="hidden" hidden name="{}" value="{}">'
+    fields = {}
+    for id, value in source.params.items():
+        if id == 'keyword' and not include_keyword:
+            continue
+        if value:
+            if id in RANGED_PARAMS:
+                value = '{}-{}'.format(value[0], value[1])
+            fields[id] = tpl.format(key_by_id(id), value)
+    if include_ranges:
+        for id in RANGED_PARAMS:
+            if id not in fields:
+                fields[id] = tpl.format(key_by_id(id), '')
+    return ''.join(fields.values())

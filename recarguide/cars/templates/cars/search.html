@@ -16,22 +16,37 @@
   <div class="row" id="search-results">
     <div class="col-lg-3 col-md-4 mb-4" id="search-filter">
       <div class="card">
-        <div class="card-header">Narrow Results</div>
-        <div class="card-body">
-          {% current_filters source %}
-          {% facet_group 'make' source %}
-          {% facet_group 'model' source %}
-          {% facet_group 'category' source %}
-          {% facet_group 'subcategory' source %}
-          {% ranged_facet_group 'year' source %}
-          {% ranged_facet_group 'price' source %}
-          <h6 class="card-title">Options</h6>
-          <hr>
-          <div class="action-buttons">
-            <a href="#" class="btn btn-primary px-4">Apply Filters</a>
-            <a href="#" class="btn btn-inverse px-4">Clear Search</a>
+        <form action="{% url 'cars:search' %}" method="get">
+          {{ fields|safe }}
+          <div class="card-header">Narrow Results</div>
+          <div class="card-body">
+            {% current_filters source %}
+            {% facet_group 'make' source %}
+            {% facet_group 'model' source %}
+            {% facet_group 'category' source %}
+            {% facet_group 'subcategory' source %}
+            {% ranged_facet_group 'year' source %}
+            {% ranged_facet_group 'price' source %}
+            <h6 class="card-title">Options</h6>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                Has Picture Only
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                Include Sold Listings
+              </label>
+            </div>
+            <hr>
+            <div class="action-buttons">
+              <button type="submit" class="btn btn-primary px-4">Apply Filters</button>
+              <button type="button" class="btn btn-link px-4">Clear Search</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 

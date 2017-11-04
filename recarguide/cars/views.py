@@ -3,7 +3,8 @@ from django.http import Http404
 from django.shortcuts import render
 
 from recarguide.cars.models import Car
-from recarguide.cars.search import QueryBuilder, CarSource, PAGE_SIZE
+from recarguide.cars.search import QueryBuilder, CarSource, PAGE_SIZE, \
+    build_hidden_fields
 
 
 def view(request, slug, id):
@@ -25,5 +26,6 @@ def search(request):
         raise Http404
     if page <= 0 or page > pager.num_pages:
         raise Http404
-    cars = pager.page(page)
-    return render(request, 'cars/search.html', {'source': source, 'cars': cars})
+    return render(request, 'cars/search.html',
+                  {'source': source, 'cars': pager.page(page),
+                   'fields': build_hidden_fields(source)})

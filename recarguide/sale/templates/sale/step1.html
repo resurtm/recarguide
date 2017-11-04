@@ -34,7 +34,7 @@
                   Max Photos: <strong>{{ plan.max_photos }}</strong>
                 </p>
 
-                {% if process.package_plan and process.package_plan.id != plan.id %}
+                {% if process.package_plan and process.package_plan.id != plan.id and process.payment %}
                   <small class="cannot-change">
                     <nobr>(cannot change the plan,</nobr>
                     <nobr>because you've already</nobr>

@@ -1,19 +1,16 @@
 from django import template
 
 from recarguide.cars.search import RANGED_PARAMS, UrlBuilder, \
-    key_by_id, name_by_id, SHORT_FACET_SIZE, LONG_FACET_SIZE
+    build_hidden_fields, name_by_id, key_by_id, SHORT_FACET_SIZE, \
+    LONG_FACET_SIZE
 
 register = template.Library()
 
 
 @register.inclusion_tag('cars/search_bar.html')
 def search_bar(source):
-    tpl = '<input type="hidden" hidden name="{}" value="{}">'
-    fields = ''
-    for id, value in source.params.items():
-        if value and id != 'keyword':
-            fields += tpl.format(key_by_id(id), value)
-    return {'fields': fields, 'keyword': source.params['keyword']}
+    return {'fields': build_hidden_fields(source, True, False),
+            'keyword': source.params['keyword']}
 
 
 @register.inclusion_tag('cars/current_filters.html')
@@ -23,11 +20,11 @@ def current_filters(source):
     for id, v in source.params.items():
         if not v:
             continue
-        params.append((
-            name_by_id(id),
-            url.build(**{id: '-'}),
-            '{}—{}'.format(v[0], v[1]) if id in RANGED_PARAMS else v
-        ))
+        if id in RANGED_PARAMS:
+            if v == source.facet_ranges[id]:
+                continue
+            v = '{}—{}'.format(v[0], v[1])
+        params.append((name_by_id(id), url.build(**{id: '-'}), v))
     return {'params': params}
 
 
@@ -58,8 +55,9 @@ def facet_group(id, source):
 
 @register.inclusion_tag('cars/ranged_facet_group.html')
 def ranged_facet_group(id, source):
-    min_max = source.facet_ranges[id]
-    return {'title': name_by_id(id), 'min': min_max[0], 'max': min_max[1]}
+    min_max = source.facet_ranges[id] if source.facet_ranges[id] else (-1, -1)
+    return {'title': name_by_id(id), 'min': min_max[0], 'max': min_max[1],
+            'key': key_by_id(id)}
 
 
 @register.inclusion_tag('cars/search_pagination.html')
