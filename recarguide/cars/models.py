@@ -44,6 +44,14 @@ class Model(models.Model):
         return '{name} {slug}'.format(name=self.name, slug=self.slug)
 
 
+class Trim(models.Model):
+    name = models.CharField(max_length=100, default='')
+    slug = models.SlugField(max_length=100, default='')
+
+    make = models.ForeignKey('Make', on_delete=models.CASCADE, default=None)
+    model = models.ForeignKey('Model', on_delete=models.CASCADE, default=None)
+
+
 class CarManager(models.Manager):
     def find_by_id_and_slug(self, id, slug):
         car = Car.objects.get(id=id)
@@ -60,6 +68,7 @@ class Car(models.Model):
 
     make = models.ForeignKey('Make', on_delete=models.PROTECT, default=None)
     model = models.ForeignKey('Model', on_delete=models.PROTECT, default=None)
+    trim = models.ForeignKey('Trim', on_delete=models.PROTECT, default=None)
     category = models.ForeignKey('Category', on_delete=models.PROTECT,
                                  default=None)
 
@@ -128,6 +137,10 @@ def pre_save_model_receiver(instance, *args, **kwargs):
     instance.slug = slugify(instance.name)
 
 
+def pre_save_trim_receiver(instance, *args, **kwargs):
+    instance.slug = slugify(instance.name)
+
+
 def pre_save_car_receiver(instance, *args, **kwargs):
     tpl = '{make} {model} {year}'
     instance.name = tpl.format(make=instance.make.name,
@@ -146,5 +159,6 @@ def pre_delete_photo_receiver(instance, *args, **kwargs):
 pre_save.connect(pre_save_category_receiver, sender=Category)
 pre_save.connect(pre_save_make_receiver, sender=Make)
 pre_save.connect(pre_save_model_receiver, sender=Model)
+pre_save.connect(pre_save_trim_receiver, sender=Trim)
 pre_save.connect(pre_save_car_receiver, sender=Car)
 pre_delete.connect(pre_delete_photo_receiver, sender=Photo)
