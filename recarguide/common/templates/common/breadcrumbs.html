@@ -1,13 +1,13 @@
 <ol class="breadcrumb mt-4 mb-4">
-    {% for item in items %}
-        {% if item.1 is False %}
-            <li class="breadcrumb-item active">
-                {{ item.0 }}
-            </li>
-        {% else %}
-            <li class="breadcrumb-item">
-                <a href="{% url item.1 %}">{{ item.0 }}</a>
-            </li>
-        {% endif %}
-    {% endfor %}
+  {% for item in items %}
+    {% if item.1 is False %}
+      <li class="breadcrumb-item active">
+        {{ item.0 }}
+      </li>
+    {% else %}
+      <li class="breadcrumb-item">
+        <a href="{% url item.1 %}">{{ item.0 }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
 </ol>

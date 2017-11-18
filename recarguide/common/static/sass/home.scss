@@ -21,6 +21,9 @@
 
     h1 {
       margin-bottom: 30px;
+      small {
+        font-size: 16px;
+      }
     }
 
     .inner {
@@ -29,6 +32,29 @@
       padding: 30px;
 
       background: white;
+    }
+  }
+}
+
+#home-adv {
+  margin-top: 75px;
+  margin-bottom: 400px;
+
+  .home-adv-text {
+    i {
+      position: absolute;
+      font-size: 30px;
+      color: darkorange;
+    }
+    p {
+      font-size: 18px;
+      line-height: 18px;
+      padding-left: 55px;
+      small {
+        font-size: 14px;
+        padding-top: 15px;
+        display: block;
+      }
     }
   }
 }
