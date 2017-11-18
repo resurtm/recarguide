@@ -8,30 +8,30 @@ const config = {
     path: path.join(__dirname, 'recarguide', 'common', 'static', 'bundle'),
     filename: 'bundle.js'
   },
+  devtool: 'eval-source-map',
   module: {
     rules: [
+      {
+        test: /\.(png|svg|gif|jpg|jpeg|woff|woff2|eot|ttf)$/,
+        use: {loader: 'url-loader?limit=4000'}
+      },
       {
         test: /\.(scss|css)$/,
         use: ExtractTextPlugin.extract({
           use: [
-            /*{loader: 'style-loader', options: {sourceMap: true}},*/
-            {loader: 'css-loader', options: {sourceMap: true}},
-            /*{loader: 'postcss-loader', options: {sourceMap: true}},*/
-            {loader: 'sass-loader', options: {sourceMap: true}}
+            /*{loader: 'style-loader'},*/
+            {loader: 'css-loader'},
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: function () {
+                  return [require('precss'), require('autoprefixer')];
+                }
+              }
+            },
+            {loader: 'sass-loader'}
           ]
         })
-      },
-      {
-        test: /\.(png|svg|gif|jpg|jpeg|woff|woff2|eot|ttf)$/,
-        use: [{
-          loader: 'url-loader?limit=4000'
-        }]
-      },
-      {
-        test: /bootstrap[\/\\]dist[\/\\]js[\/\\]umd[\/\\]/,
-        use: [{
-          loader: 'imports-loader?jQuery=jquery'
-        }]
       }
     ]
   },
@@ -41,10 +41,7 @@ const config = {
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
-      Tether: 'tether',
-      'window.Tether': 'tether',
-      Popper: 'popper.js',
-      'window.Popper': 'popper.js',
+      Popper: ['popper.js', 'default'],
       Alert: 'exports-loader?Alert!bootstrap/js/dist/alert',
       Button: 'exports-loader?Button!bootstrap/js/dist/button',
       Carousel: 'exports-loader?Carousel!bootstrap/js/dist/carousel',
@@ -54,7 +51,7 @@ const config = {
       Popover: 'exports-loader?Popover!bootstrap/js/dist/popover',
       Scrollspy: 'exports-loader?Scrollspy!bootstrap/js/dist/scrollspy',
       Tab: 'exports-loader?Tab!bootstrap/js/dist/tab',
-      Tooltip: 'exports-loader?Tooltip!bootstrap/js/dist/tooltip',
+      Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
       Util: 'exports-loader?Util!bootstrap/js/dist/util'
     })
   ]

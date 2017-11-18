@@ -1,6 +1,8 @@
 .PHONY: default celery flower webpack serve tests build
 
-default: serve
+default:
+	@echo "\nAvailable commands:"
+	@echo "\tcelery\n\tflower\n\twebpack\n\tserve\n\ttests\n\tbuild\n"
 
 celery:
 	celery -A recarguide worker -l info

@@ -1,4 +1,4 @@
-require('bootstrap-loader');
+require('bootstrap');
 require('font-awesome/scss/font-awesome.scss');
 require('jquery-ui/themes/base/slider.css');
 require('jquery-ui/themes/base/theme.css');
