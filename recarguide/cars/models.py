@@ -17,7 +17,7 @@ class Category(models.Model):
                                default=None)
 
     def __str__(self):
-        return '{name} {slug}'.format(name=self.name, slug=self.slug)
+        return self.name
 
 
 class MakeManager(models.Manager):
@@ -44,7 +44,7 @@ class Make(models.Model):
     out_since = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return '{name} {slug}'.format(name=self.name, slug=self.slug)
+        return self.name
 
 
 class Model(models.Model):
@@ -54,7 +54,7 @@ class Model(models.Model):
     make = models.ForeignKey('Make', on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return '{name} {slug}'.format(name=self.name, slug=self.slug)
+        return self.name
 
 
 class Trim(models.Model):
@@ -81,7 +81,9 @@ class Car(models.Model):
 
     make = models.ForeignKey('Make', on_delete=models.PROTECT, default=None)
     model = models.ForeignKey('Model', on_delete=models.PROTECT, default=None)
-    trim = models.ForeignKey('Trim', on_delete=models.PROTECT, default=None)
+    trim = models.ForeignKey('Trim', on_delete=models.PROTECT, default=None,
+                             null=True)
+    trim_name = models.CharField(max_length=100, default='')
     category = models.ForeignKey('Category', on_delete=models.PROTECT,
                                  default=None)
 
@@ -92,7 +94,7 @@ class Car(models.Model):
     description = models.TextField(max_length=10000, default='')
 
     def __str__(self):
-        return '{name} {slug}'.format(name=self.name, slug=self.slug)
+        return self.name
 
     @property
     def full_category_name(self):
@@ -155,9 +157,10 @@ def pre_save_trim_receiver(instance, *args, **kwargs):
 
 
 def pre_save_car_receiver(instance, *args, **kwargs):
-    tpl = '{make} {model} {year}'
+    tpl = '{make} {model} {trim} {year}'
     instance.name = tpl.format(make=instance.make.name,
                                model=instance.model.name,
+                               trim=instance.trim_name,
                                year=instance.year)
     instance.slug = slugify(instance.name)
 

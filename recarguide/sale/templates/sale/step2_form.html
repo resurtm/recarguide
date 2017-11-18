@@ -26,6 +26,15 @@
         {% include 'partials/field_errors.html' with errors=form.model.errors %}
       </div>
     </div>
+    <div class="form-group row">
+      <label for="{{ form.trim_name.auto_id }}"
+             class="col-sm-3 col-form-label">{{ form.trim_name.label }}</label>
+      <div class="col-sm-9">
+        {% render_field form.trim_name class+='form-control' disabled='disabled' %}
+        {% render_field form.trim_id class+='form-control' hidden='hidden' %}
+        {% include 'partials/field_errors.html' with errors=form.trim_name.errors %}
+      </div>
+    </div>
 
     <hr class="mt-4 mb-4">
 

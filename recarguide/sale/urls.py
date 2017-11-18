@@ -15,6 +15,8 @@ urlpatterns = [
 
     url(r'^fetch-models/(?P<make_id>\d+)/$', views.fetch_models,
         name='fetch_models'),
+    url(r'^fetch-trims/(?P<model_id>\d+)/(?P<trim_name>[^/]*)/$',
+        views.fetch_trims, name='fetch_trims'),
     url(r'^fetch-categories/(?P<category_id>\d+)/$', views.fetch_categories,
         name='fetch_categories'),
 

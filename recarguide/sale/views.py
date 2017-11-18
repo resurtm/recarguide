@@ -13,7 +13,7 @@ from django.utils.crypto import get_random_string
 from django.views.decorators.http import require_http_methods, require_GET, \
     require_POST
 
-from recarguide.cars.models import Model, Category, Photo
+from recarguide.cars.models import Model, Category, Photo, Trim
 from recarguide.common.tools import ensure_stripe_api_key
 from recarguide.sale.forms import CarSaleForm, SaleContactForm
 from recarguide.sale.models import PackagePlan
@@ -118,6 +118,14 @@ def step5(request, process):
 def fetch_models(request, make_id):
     return JsonResponse({m.pk: m.name
                          for m in Model.objects.filter(make_id=make_id)})
+
+
+@login_required
+@require_GET
+def fetch_trims(request, model_id, trim_name):
+    ts = Trim.objects.filter(model_id=model_id, name__icontains=trim_name)
+    res = [{'id': t.id, 'value': t.name, 'label': t.name} for t in ts]
+    return JsonResponse(res, safe=False)
 
 
 @login_required

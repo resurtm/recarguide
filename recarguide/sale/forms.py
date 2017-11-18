@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import ModelForm, ModelChoiceField, ChoiceField
+from django.forms import ModelForm, ModelChoiceField, ChoiceField, CharField
 
-from recarguide.cars.models import Car, Make, Model, Category
+from recarguide.cars.models import Car, Make, Model, Trim, Category
 from recarguide.common.countries import get_countries
 from recarguide.sale.models import Contact
 from recarguide.sale.tools import years_choices
@@ -17,10 +17,14 @@ def _rel_or_none(instance, attr):
 
 class CarSaleForm(ModelForm):
     year = ChoiceField(choices=years_choices())
+
     make = ModelChoiceField(queryset=Make.objects.order_by('name'),
                             to_field_name='id', empty_label='')
     model = ModelChoiceField(queryset=Model.objects.none(),
                              to_field_name='id', empty_label='')
+
+    trim_id = CharField()
+    trim_name = CharField()
 
     category = ModelChoiceField(
         queryset=Category.objects.filter(parent__isnull=True).order_by('name'),
@@ -31,15 +35,18 @@ class CarSaleForm(ModelForm):
     class Meta:
         model = Car
         fields = ['year', 'price', 'mileage', 'description']
-        labels = {'make': 'Make/Manufacturer'}
+        labels = {'make': 'Make/Manufacturer',
+                  'trim_name': 'Trim'}
 
     def __init__(self, *args, **kwargs):
         super(CarSaleForm, self).__init__(*args, **kwargs)
-        self.__setup_initial_state()
+        self._setup_initial_state()
         if 'make' in self.data and len(self.data['make']) > 0:
-            self.__setup_model_field(int(self.data['make']))
+            self._setup_model_field(int(self.data['make']))
+        self.fields['trim_name'].required = False
+        self.fields['trim_id'].required = False
         if 'category' in self.data and len(self.data['category']) > 0:
-            self.__setup_subcategory_field(int(self.data['category']))
+            self._setup_subcategory_field(int(self.data['category']))
         if len(self.fields['subcategory'].choices) == 0:
             self.fields['subcategory'].required = False
 
@@ -47,13 +54,19 @@ class CarSaleForm(ModelForm):
         self.instance.year = int(self.cleaned_data['year'])
         self.instance.make = self.cleaned_data['make']
         self.instance.model = self.cleaned_data['model']
+        self.instance.trim_name = self.cleaned_data['trim_name']
+        print(self.cleaned_data)
+        try:
+            self.instance.trim_id = int(self.cleaned_data['trim_id'])
+        except ValueError:
+            self.instance.trim_id = None
         if self.cleaned_data['subcategory'] is None:
             self.instance.category = self.cleaned_data['category']
         else:
             self.instance.category = self.cleaned_data['subcategory']
         return super(CarSaleForm, self).save(*args, **kwargs)
 
-    def __setup_initial_state(self):
+    def _setup_initial_state(self):
         if len(self.data) > 0:
             return
 
@@ -66,9 +79,12 @@ class CarSaleForm(ModelForm):
         make = _rel_or_none(self.instance, 'make')
         model = _rel_or_none(self.instance, 'model')
         if make is not None and model is not None:
-            self.__setup_model_field(make)
+            self._setup_model_field(make)
             self.fields['make'].initial = make
             self.fields['model'].initial = model
+
+        self.fields['trim_name'].initial = self.instance.trim_name
+        self.fields['trim_id'].initial = self.instance.trim_id
 
         category = _rel_or_none(self.instance, 'category')
         if category is not None:
@@ -76,11 +92,11 @@ class CarSaleForm(ModelForm):
                 self.fields['category'].initial = category
                 self.fields['subcategory'].initial = None
             else:
-                self.__setup_subcategory_field(category.parent.id)
+                self._setup_subcategory_field(category.parent.id)
                 self.fields['category'].initial = category.parent
                 self.fields['subcategory'].initial = category
 
-    def __setup_model_field(self, make):
+    def _setup_model_field(self, make):
         qs = Model.objects.filter(make_id=make)
         choices = [(m.pk, m.name) for m in qs]
         if len(choices) > 0:
@@ -88,7 +104,7 @@ class CarSaleForm(ModelForm):
         self.fields['model'].choices = choices
         self.fields['model'].queryset = qs
 
-    def __setup_subcategory_field(self, category):
+    def _setup_subcategory_field(self, category):
         qs = Category.objects.filter(parent_id=category)
         choices = [(c.pk, c.name) for c in qs]
         if len(choices) > 0:

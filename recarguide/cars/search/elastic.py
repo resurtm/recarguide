@@ -64,6 +64,7 @@ def encode_car(car):
             'slug': car.slug,
             'make': car.make.name,
             'model': car.model.name,
+            'trim': car.trim_name,
             'category': category,
             'subcategory': subcategory,
             'price': car.price,

@@ -1,0 +1,9 @@
+.ui-autocomplete {
+  list-style: none;
+  &, li, .ui-state-active {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    outline: 0;
+  }
+}
