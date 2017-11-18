@@ -21,6 +21,15 @@ class Make(models.Model):
     name = models.CharField(max_length=50, default='')
     slug = models.SlugField(max_length=50, default='')
 
+    website = models.CharField(max_length=250, default='')
+    facebook = models.CharField(max_length=250, default='')
+    twitter = models.CharField(max_length=250, default='')
+    youtube = models.CharField(max_length=250, default='')
+    instagram = models.CharField(max_length=250, default='')
+
+    in_since = models.PositiveIntegerField(default=0)
+    out_since = models.PositiveIntegerField(default=0)
+
     def __str__(self):
         return '{name} {slug}'.format(name=self.name, slug=self.slug)
 
