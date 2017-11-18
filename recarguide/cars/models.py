@@ -1,8 +1,11 @@
+from itertools import chain
+
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, pre_delete
 from django.utils.text import slugify
 
+from recarguide.cars.search.queries import find_popular_makes
 from recarguide.common.tools import boto3
 
 
@@ -17,7 +20,17 @@ class Category(models.Model):
         return '{name} {slug}'.format(name=self.name, slug=self.slug)
 
 
+class MakeManager(models.Manager):
+    def find_popular_makes(self, count=28):
+        res = find_popular_makes(count)
+        m1 = self.filter(name__in=res).all()
+        m2 = self.exclude(name__in=res).all()[:count - len(res)]
+        return list(chain(m1, m2))
+
+
 class Make(models.Model):
+    objects = MakeManager()
+
     name = models.CharField(max_length=50, default='')
     slug = models.SlugField(max_length=50, default='')
 
@@ -54,7 +67,7 @@ class Trim(models.Model):
 
 class CarManager(models.Manager):
     def find_by_id_and_slug(self, id, slug):
-        car = Car.objects.get(id=id)
+        car = self.get(id=id)
         if car.slug != slug:
             raise Car.DoesNotExist()
         return car

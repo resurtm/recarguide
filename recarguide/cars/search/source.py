@@ -1,6 +1,6 @@
 from recarguide.cars.models import Car
 from recarguide.cars.search.builders import QUERY_TYPE_COUNT, \
-    QUERY_TYPE_SELECT, QUERY_TYPE_FILTER, FACET_COUNT_PARAMS, RANGED_PARAMS
+    QUERY_TYPE_SELECT, FACET_COUNT_PARAMS, RANGED_PARAMS
 from recarguide.cars.search.elastic import search_cars
 
 

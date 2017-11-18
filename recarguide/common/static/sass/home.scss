@@ -36,9 +36,13 @@
   }
 }
 
+#home-container {
+  margin-bottom: 400px;
+}
+
 #home-adv {
   margin-top: 75px;
-  margin-bottom: 400px;
+  margin-bottom: 75px;
 
   .home-adv-text {
     i {
@@ -56,5 +60,14 @@
         display: block;
       }
     }
+  }
+}
+
+#home-most-visited {
+  margin-top: 75px;
+  margin-bottom: 75px;
+
+  .home-most-visited-make {
+    width: 150px;
   }
 }

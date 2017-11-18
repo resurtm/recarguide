@@ -1,8 +1,8 @@
 from django import template
 
-from recarguide.cars.search import RANGED_PARAMS, UrlBuilder, \
-    build_hidden_fields, name_by_id, key_by_id, SHORT_FACET_SIZE, \
-    LONG_FACET_SIZE
+from recarguide.cars.search.builders import UrlBuilder, build_hidden_fields, \
+    name_by_id, key_by_id, SHORT_FACET_SIZE, LONG_FACET_SIZE
+from recarguide.cars.search.source import RANGED_PARAMS
 
 register = template.Library()
 

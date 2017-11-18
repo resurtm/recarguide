@@ -1,5 +1,10 @@
 from django.shortcuts import render
 
+from recarguide.cars.models import Make
+
 
 def home(request):
-    return render(request, 'common/home.html')
+    popular_makes = Make.objects.find_popular_makes()
+    return render(request, 'common/home.html', {
+        'popular_makes': popular_makes,
+    })

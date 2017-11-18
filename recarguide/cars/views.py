@@ -3,8 +3,9 @@ from django.http import Http404
 from django.shortcuts import render
 
 from recarguide.cars.models import Car
-from recarguide.cars.search import QueryBuilder, CarSource, PAGE_SIZE, \
+from recarguide.cars.search.builders import QueryBuilder, PAGE_SIZE, \
     build_hidden_fields
+from recarguide.cars.search.source import CarSource
 
 
 def view(request, slug, id):

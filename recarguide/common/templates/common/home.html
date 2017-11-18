@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" id="home-container">
 
     <div class="row" id="home-adv">
       <div class="col-lg-6 col-12 home-adv-text">
@@ -41,14 +41,18 @@
         <i class="fa fa-users" aria-hidden="true"></i>
         <p class="my-4">
           Big opportunity awaits<br>
-          <small>Our marketplace has more than 100 million customers, so there's chance you'll not only find a buyer,
-            but a buyer who's willing</small>
+          <small>
+            Our marketplace has more than 100 million customers, so there's chance you'll not only find a buyer,
+            but a buyer who's willing
+          </small>
         </p>
         <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
         <p class="my-4">
           We're here for you<br>
-          <small>Our dedicated Seller Protection team works behind the scenes around the clock— so you can sell
-            confidently</small>
+          <small>
+            Our dedicated Seller Protection team works behind the scenes around the clock— so you can sell
+            confidently
+          </small>
         </p>
         <a href="{% url 'sale:index' %}" class="btn btn-lg btn-outline-warning px-5 mt-2">
           <strong>Sell Your Car Now</strong>
@@ -58,11 +62,20 @@
         <img src="/static/img/pc-tablet-mobile.png" alt="PC, Computer, Tablet, Mobile"
              class="d-block mx-auto mt-5">
       </div>
+    </div>
 
-      <div class="row" id="home-most-visited">
-
+    <div class="row" id="home-most-visited">
+      <div class="col-md-8 col-12 mx-auto">
+        <h2 class="text-center">Most Popular Makes</h2>
+        <hr class="my-4">
+        <div class="d-flex flex-wrap justify-content-between">
+          {% for make in popular_makes %}
+            <div class="home-most-visited-make p-2">
+              <a href="{% url 'cars:search' %}?m={{ make.name }}">{{ make.name }}</a>
+            </div>
+          {% endfor %}
+        </div>
       </div>
-
     </div>
 
   </div>
