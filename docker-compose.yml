@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:9.6
+
+  backend:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/opt/recarguide/
+    ports:
+      - "5590:8000"
+    depends_on:
+      - db
