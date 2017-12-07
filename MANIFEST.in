@@ -1,4 +1,0 @@
-graft recarguide
-recursive-exclude recarguide settings_local.py
-global-exclude __pycache__
-global-exclude *.py[doc]

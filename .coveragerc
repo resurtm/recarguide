@@ -1,4 +1,0 @@
-[run]
-omit =
-    recarguide/*/migrations/*
-    recarguide/wsgi.py
