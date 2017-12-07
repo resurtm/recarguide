@@ -73,10 +73,11 @@ WSGI_APPLICATION = 'recarguide.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
+        'NAME': 'pgdb',
+        'USER': 'pguser',
+        'PASSWORD': 'pgpass',
         'HOST': 'db',
-        'PORT': 5432,
+        'PORT': '5432',
     },
 }
 
@@ -115,3 +116,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CELERY_BROKER_URL = 'amqp://rabuser:rabpass@rabbit:5672/recarguide'

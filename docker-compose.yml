@@ -3,13 +3,42 @@ version: '3'
 services:
   db:
     image: postgres:9.6
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DB: pgdb
+    ports:
+      - "5591:5432"
+    volumes:
+      - /opt/recarguide/pgdata:/var/lib/postgresql/data
+
+  rabbit:
+    image: rabbitmq:3.6
+    environment:
+      RABBITMQ_DEFAULT_USER: rabuser
+      RABBITMQ_DEFAULT_PASS: rabpass
+      RABBITMQ_DEFAULT_VHOST: recarguide
+    ports:
+      - "5592:5672"
+      - "5593:15672"
 
   backend:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: make web
     volumes:
       - .:/opt/recarguide/
     ports:
-      - "5590:8000"
+      - "5590:8080"
     depends_on:
       - db
+      - rabbit
+      - celery
+
+  celery:
+    build: .
+    command: make celery
+    volumes:
+      - .:/opt/recarguide/
+    depends_on:
+      - db
+      - rabbit
