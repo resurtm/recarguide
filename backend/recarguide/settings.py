@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'common.apps.CommonConfig',
     'cars.apps.CarsConfig',
     'sale.apps.SaleConfig',
 ]
@@ -79,7 +80,7 @@ DATABASES = {
         'NAME': 'pgdb',
         'USER': 'pguser',
         'PASSWORD': 'pgpass',
-        'HOST': 'db',
+        'HOST': 'pg',
         'PORT': '5432',
     },
 }

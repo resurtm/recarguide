@@ -1,10 +1,13 @@
 version: '3'
 
 volumes:
-    data:
+    pg_data:
+      driver: local
+    elastic_data:
+      driver: local
 
 services:
-  db:
+  pg:
     image: postgres:9.6
     environment:
       POSTGRES_USER: pguser
@@ -13,7 +16,20 @@ services:
     ports:
       - 5591:5432
     volumes:
-      - data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
+    environment:
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
+    ports:
+      - 5594:9200
 
   rabbit:
     image: rabbitmq:3.6
@@ -31,7 +47,8 @@ services:
     volumes:
       - ./backend/:/opt/recarguide/backend/
     depends_on:
-      - db
+      - pg
+      - elastic
       - rabbit
 
   backend:
@@ -39,10 +56,12 @@ services:
     command: make web
     volumes:
       - ./backend/:/opt/recarguide/backend/
+      - ./frontend/dist/:/opt/recarguide/backend/common/static/
     ports:
       - 5590:8080
     depends_on:
-      - db
+      - pg
+      - elastic
       - rabbit
 
   frontend:

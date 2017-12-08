@@ -1,10 +1,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from cars.views import index
-
 urlpatterns = [
-    url(r'^$', index, name='index'),
-    url(r'^cars/', include('cars.urls', namespace='cars')),
+    url(r'^', include('common.urls', namespace='common')),
     url(r'^admin/', admin.site.urls),
 ]

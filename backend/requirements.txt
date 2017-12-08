@@ -1,3 +1,12 @@
-Django>=1.11,<2.0
+Django>=1.11,<1.12
 psycopg2
 celery
+flower
+django-widget-tweaks
+stripe
+boto3
+Pillow
+elasticsearch>=5.0.0,<6.0.0
+elasticsearch-dsl>=5.0.0,<6.0.0
+coverage
+beautifulsoup4

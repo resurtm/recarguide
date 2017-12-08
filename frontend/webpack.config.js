@@ -36,7 +36,7 @@ const config = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('bundle.css'),
+    new ExtractTextPlugin('index.css'),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
