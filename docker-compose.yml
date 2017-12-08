@@ -43,7 +43,7 @@ services:
 
   celery:
     build: ./backend
-    command: make celery
+    command: celery worker --app recarguide --loglevel INFO
     volumes:
       - ./backend/:/opt/recarguide/backend/
     depends_on:
@@ -51,9 +51,19 @@ services:
       - elastic
       - rabbit
 
+  flower:
+    build: ./backend
+    command: flower -A recarguide --port=8081
+    volumes:
+      - ./backend/:/opt/recarguide/backend/
+    depends_on:
+      - celery
+    ports:
+      - 5595:8081
+
   backend:
     build: ./backend
-    command: make web
+    command: python manage.py runserver 0.0.0.0:8080
     volumes:
       - ./backend/:/opt/recarguide/backend/
       - ./frontend/dist/:/opt/recarguide/backend/common/static/
@@ -62,11 +72,12 @@ services:
     depends_on:
       - pg
       - elastic
-      - rabbit
+      - celery
+      - frontend
 
   frontend:
     image: node:8
     working_dir: /opt/recarguide/frontend/
-    command: make webpack
+    command: yarn install && node_modules/.bin/webpack --watch
     volumes:
       - ./frontend/:/opt/recarguide/frontend/
