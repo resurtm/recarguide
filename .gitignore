@@ -12,3 +12,5 @@ __pycache__/
 
 /frontend/dist/*
 !/frontend/dist/.gitkeep
+
+/secrets.yml

@@ -1,0 +1,101 @@
+{% extends 'common/layout/main.html' %}
+
+{% load cars_search %}
+{% load breadcrumbs %}
+{% load humanize %}
+
+{% block after_nav_bar %}
+  {% search_bar source %}
+{% endblock %}
+
+{% block content %}
+  {% breadcrumb 'Home' 'common:home' %}
+  {% breadcrumb 'Cars for Sale' 'cars:search' %}
+  {% breadcrumbs %}
+
+  <div class="row" id="search-results">
+    <div class="col-lg-3 col-md-4 mb-4" id="search-filter">
+      <div class="card">
+        <form action="{% url 'cars:search' %}" method="get">
+          {{ fields|safe }}
+          <div class="card-header">Narrow Results</div>
+          <div class="card-body">
+            {% current_filters source %}
+            {% facet_group 'make' source %}
+            {% facet_group 'model' source %}
+            {% facet_group 'category' source %}
+            {% facet_group 'subcategory' source %}
+            {% ranged_facet_group 'year' source %}
+            {% ranged_facet_group 'price' source %}
+            <h6 class="card-title">Options</h6>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                Has Picture Only
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="">
+                Include Sold Listings
+              </label>
+            </div>
+            <hr>
+            <div class="action-buttons">
+              <button type="submit" class="btn btn-primary px-4">Apply Filters</button>
+              <button type="button" class="btn btn-link px-4">Clear Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-9 col-md-8">
+      {% for car in cars %}
+        <div class="search-result-item mb-4 d-lg-flex flex-row">
+          {% if car.photos.first %}
+            <div class="text-center text-lg-left mt-3 mt-lg-0">
+              <a href="{% url 'cars:view' id=car.id slug=car.slug %}">
+                <img src="{{ car.photos.first.thumb_url }}" alt="{{ car.name }}" title="{{ car.name }}">
+              </a>
+            </div>
+          {% endif %}
+          <div class="py-3 px-4">
+            <a href="{% url 'cars:view' id=car.id slug=car.slug %}" title="{{ car.name }}">
+              <h4>{{ car.name }}</h4>
+            </a>
+            <p>
+              <strong>${{ car.price }}</strong>
+              <span class="ml-4">{{ car.sellprocess.contact.location_name }}</span>
+            </p>
+            <table class="table table-sm">
+              <tr>
+                <td><span>Year</span></td>
+                <td>{{ car.year }}</td>
+                <td class="pl-3"><span>Category</span></td>
+                <td>{{ car.full_category_name }}</td>
+              </tr>
+              <tr>
+                <td><span>Make</span></td>
+                <td>{{ car.make.name }}</td>
+                <td class="pl-3"><span>Mileage</span></td>
+                <td>{{ car.mileage }} km</td>
+              </tr>
+              <tr>
+                <td><span>Model</span></td>
+                <td>{{ car.model.name }}</td>
+                {% comment %}
+                <td class="pl-3"><span>Posted</span></td>
+                <td></td>
+                {% endcomment %}
+              </tr>
+            </table>
+            <p>{{ car.description|truncatewords:7 }}</p>
+          </div>
+        </div>
+      {% endfor %}
+
+      {% search_pagination source cars %}
+    </div>
+  </div>
+{% endblock %}

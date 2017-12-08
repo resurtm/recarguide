@@ -1,7 +1,12 @@
+from itertools import chain
+
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, pre_delete
 from django.utils.text import slugify
+
+from cars.search.queries import find_popular_makes
+from common.tools import boto3
 
 
 class Category(models.Model):
@@ -16,13 +21,11 @@ class Category(models.Model):
 
 
 class MakeManager(models.Manager):
-    pass
-
-    # def find_popular_makes(self, count=28):
-    #     res = find_popular_makes(count)
-    #     m1 = self.filter(name__in=res).all()
-    #     m2 = self.exclude(name__in=res).all()[:count - len(res)]
-    #     return list(chain(m1, m2))
+    def find_popular_makes(self, count=28):
+        res = find_popular_makes(count)
+        m1 = self.filter(name__in=res).all()
+        m2 = self.exclude(name__in=res).all()[:count - len(res)]
+        return list(chain(m1, m2))
 
 
 class Make(models.Model):
@@ -166,12 +169,10 @@ def pre_save_car_receiver(instance, *args, **kwargs):
 
 
 def pre_delete_photo_receiver(instance, *args, **kwargs):
-    pass
-
-    # boto3().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
-    #                       Key=instance.storage_key)
-    # boto3().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
-    #                       Key=instance.thumb_storage_key)
+    boto3().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
+                          Key=instance.storage_key)
+    boto3().delete_object(Bucket=settings.AWS_S3_BUCKET_NAME,
+                          Key=instance.thumb_storage_key)
 
 
 pre_save.connect(pre_save_category_receiver, sender=Category)

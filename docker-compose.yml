@@ -1,10 +1,14 @@
-version: '3'
+version: '3.1'
 
 volumes:
-    pg_data:
-      driver: local
-    elastic_data:
-      driver: local
+  pg_data:
+    driver: local
+  elastic_data:
+    driver: local
+
+secrets:
+  common_secrets:
+    file: secrets.yml
 
 services:
   pg:
@@ -74,10 +78,12 @@ services:
       - elastic
       - celery
       - frontend
+    secrets:
+      - common_secrets
 
   frontend:
     image: node:8
     working_dir: /opt/recarguide/frontend/
-    command: yarn install && node_modules/.bin/webpack --watch
+    command: bash -c "yarn install && node_modules/.bin/webpack --watch"
     volumes:
       - ./frontend/:/opt/recarguide/frontend/
