@@ -26,7 +26,7 @@ services:
       - 5593:15672
 
   celery:
-    build: .
+    build: ./backend
     command: make celery
     volumes:
       - ./backend/:/opt/recarguide/backend/
@@ -35,7 +35,7 @@ services:
       - rabbit
 
   backend:
-    build: .
+    build: ./backend
     command: make web
     volumes:
       - ./backend/:/opt/recarguide/backend/
