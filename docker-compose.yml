@@ -1,5 +1,8 @@
 version: '3'
 
+volumes:
+    data:
+
 services:
   db:
     image: postgres:9.6
@@ -8,9 +11,9 @@ services:
       POSTGRES_PASSWORD: pgpass
       POSTGRES_DB: pgdb
     ports:
-      - "5591:5432"
+      - 5591:5432
     volumes:
-      - /opt/recarguide/pgdata:/var/lib/postgresql/data
+      - data:/var/lib/postgresql/data
 
   rabbit:
     image: rabbitmq:3.6
@@ -19,26 +22,32 @@ services:
       RABBITMQ_DEFAULT_PASS: rabpass
       RABBITMQ_DEFAULT_VHOST: recarguide
     ports:
-      - "5592:5672"
-      - "5593:15672"
-
-  backend:
-    build: .
-    command: make web
-    volumes:
-      - .:/opt/recarguide/
-    ports:
-      - "5590:8080"
-    depends_on:
-      - db
-      - rabbit
-      - celery
+      - 5592:5672
+      - 5593:15672
 
   celery:
     build: .
     command: make celery
     volumes:
-      - .:/opt/recarguide/
+      - ./backend/:/opt/recarguide/backend/
     depends_on:
       - db
       - rabbit
+
+  backend:
+    build: .
+    command: make web
+    volumes:
+      - ./backend/:/opt/recarguide/backend/
+    ports:
+      - 5590:8080
+    depends_on:
+      - db
+      - rabbit
+
+  frontend:
+    image: node:8
+    working_dir: /opt/recarguide/frontend/
+    command: make webpack
+    volumes:
+      - ./frontend/:/opt/recarguide/frontend/
