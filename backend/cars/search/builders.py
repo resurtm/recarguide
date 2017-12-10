@@ -1,6 +1,5 @@
-from urllib.parse import urlencode
-
 from django.urls import reverse
+from six.moves.urllib.parse import urlencode
 
 PAGE_SIZE = 7
 SHORT_FACET_SIZE = 5

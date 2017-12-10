@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from recarguide.cars.models import Make
+from cars.models import Make
 
 
 def home(request):

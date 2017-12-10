@@ -1,10 +1,10 @@
-# Copied from django.contrib.auth.urls and modified
+# copied from django.contrib.auth.urls and modified
 
 from django.conf.urls import url
 from django.contrib.auth import views
 
-from recarguide.auth.forms import AuthenticationForm
-from recarguide.auth.views import signup
+from auth.forms import AuthenticationForm
+from auth.views import signup
 
 app_name = 'auth'
 

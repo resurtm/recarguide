@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from recarguide.cabinet import views
+from cabinet import views
 
 app_name = 'cabinet'
 

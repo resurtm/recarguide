@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import ModelForm, ModelChoiceField, ChoiceField, CharField
 
-from cars.models import Car, Make, Model, Trim, Category
+from cars.models import Car, Make, Model, Category
 from common.countries import get_countries
 from sale.models import Contact
 from sale.tools import years_choices

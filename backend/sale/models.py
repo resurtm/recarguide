@@ -58,7 +58,7 @@ class SellProcess(models.Model):
             self.contact.save()
             self.finished = True
             self.save()
-        # reindex_car(self.car)
+        reindex_car(self.car)
 
 
 class Contact(models.Model):

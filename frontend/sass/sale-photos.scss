@@ -1,0 +1,28 @@
+#sale-photos-preview {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > div {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    position: relative;
+
+    i {
+      position: absolute;
+      font-size: 30px;
+      line-height: 30px;
+      top: 5px;
+      right: 5px;
+      cursor: pointer;
+      opacity: 0.5;
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+
+    &, img {
+      width: 125px !important;
+      height: 125px !important;
+    }
+  }
+}

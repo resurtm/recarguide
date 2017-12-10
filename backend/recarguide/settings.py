@@ -25,9 +25,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
-    'common.apps.CommonConfig',
+    'auth.apps.AuthConfig',
+    'cabinet.apps.CabinetConfig',
     'cars.apps.CarsConfig',
+    'common.apps.CommonConfig',
     'sale.apps.SaleConfig',
 ]
 
@@ -114,6 +117,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CELERY_BROKER_URL = 'amqp://rabuser:rabpass@rabbit:5672/recarguide'
+ELASTICSEARCH_DSN = 'http://elastic:changeme@elastic:9200/'
 
 STRIPE = secrets['stripe']
 AWS_S3 = secrets['aws_s3']

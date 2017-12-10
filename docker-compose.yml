@@ -21,6 +21,8 @@ services:
       - 5591:5432
     volumes:
       - pg_data:/var/lib/postgresql/data
+    logging:
+      driver: none
 
   elastic:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
@@ -34,6 +36,8 @@ services:
       - elastic_data:/usr/share/elasticsearch/data
     ports:
       - 5594:9200
+    logging:
+      driver: none
 
   rabbit:
     image: rabbitmq:3.6
@@ -44,6 +48,8 @@ services:
     ports:
       - 5592:5672
       - 5593:15672
+    logging:
+      driver: none
 
   celery:
     build: ./backend
@@ -54,6 +60,10 @@ services:
       - pg
       - elastic
       - rabbit
+    secrets:
+      - common_secrets
+#    logging:
+#      driver: none
 
   flower:
     build: ./backend
@@ -64,6 +74,10 @@ services:
       - celery
     ports:
       - 5595:8081
+    secrets:
+      - common_secrets
+#    logging:
+#      driver: none
 
   backend:
     build: ./backend
@@ -71,6 +85,7 @@ services:
     volumes:
       - ./backend/:/opt/recarguide/backend/
       - ./frontend/dist/:/opt/recarguide/backend/common/static/
+      - ./frontend/img/:/opt/recarguide/backend/common/static/img
     ports:
       - 5590:8080
     depends_on:
@@ -80,6 +95,8 @@ services:
       - frontend
     secrets:
       - common_secrets
+#    logging:
+#      driver: none
 
   frontend:
     image: node:8
@@ -87,3 +104,5 @@ services:
     command: bash -c "yarn install && node_modules/.bin/webpack --watch"
     volumes:
       - ./frontend/:/opt/recarguide/frontend/
+#    logging:
+#      driver: none

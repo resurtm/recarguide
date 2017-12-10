@@ -1,0 +1,73 @@
+#home-banner {
+  position: relative;
+
+  .home-banner-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+
+    background: url('/static/img/home-main-bg.jpg') no-repeat center white;
+    background-size: cover;
+    opacity: 0.8;
+  }
+
+  .home-banner-body {
+    height: 420px;
+    padding: 80px 20px 0 20px;
+
+    position: relative;
+    z-index: 2;
+
+    h1 {
+      margin-bottom: 30px;
+      small {
+        font-size: 16px;
+      }
+    }
+
+    .inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px;
+
+      background: white;
+    }
+  }
+}
+
+#home-container {
+  margin-bottom: 400px;
+}
+
+#home-adv {
+  margin-top: 75px;
+  margin-bottom: 75px;
+
+  .home-adv-text {
+    i {
+      position: absolute;
+      font-size: 30px;
+      color: darkorange;
+    }
+    p {
+      font-size: 18px;
+      line-height: 18px;
+      padding-left: 55px;
+      small {
+        font-size: 14px;
+        padding-top: 15px;
+        display: block;
+      }
+    }
+  }
+}
+
+#home-most-visited {
+  margin-top: 75px;
+  margin-bottom: 75px;
+
+  .home-most-visited-make {
+    width: 150px;
+  }
+}
