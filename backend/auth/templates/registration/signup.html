@@ -1,0 +1,99 @@
+{% extends 'common/layout/main.html' %}
+
+{% load tools %}
+
+{% block content %}
+  <div class="row auth-common-form">
+    <div class="col-sm-10 col-md-6 mr-auto ml-auto">
+
+      <h1 class="mb-4">Create Account</h1>
+
+      <form method="post" action="{% url 'auth:signup' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          {{ form.email.label_tag }}
+          {% if form.email.errors %}
+            {{ form.email|add_class:'is-invalid' }}
+          {% else %}
+            {{ form.email }}
+          {% endif %}
+          <small id="signup-form-email-help" class="form-text text-muted">
+            We will never share your email with anyone
+          </small>
+          {% if form.email.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.email.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.username.label_tag }}
+          {% if form.username.errors %}
+            {{ form.username|add_class:'is-invalid' }}
+          {% else %}
+            {{ form.username }}
+          {% endif %}
+          <small id="signup-form-username-help" class="form-text text-muted">
+            Enter username you would like to use
+          </small>
+          {% if form.username.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.username.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.password1.label_tag }}
+          {% if form.password1.errors %}
+            {{ form.password1|add_class:'is-invalid' }}
+          {% else %}
+            {{ form.password1 }}
+          {% endif %}
+          <small id="signup-form-password1-help" class="form-text text-muted"></small>
+          {% if form.password1.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.password1.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.password2.label_tag }}
+          {% if form.password2.errors %}
+            {{ form.password2|add_class:'is-invalid' }}
+          {% else %}
+            {{ form.password2 }}
+          {% endif %}
+          <small id="signup-form-password2-help" class="form-text text-muted">
+            Enter the same password as before, for verification
+          </small>
+          {% if form.password2.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.password2.errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-danger">Register</button>
+      </form>
+
+      <p class="mt-4"><a href="{% url 'auth:login' %}">Want to log in to existing account?</a></p>
+
+      {% comment %}
+            {{ form.as_table }}
+            {% endcomment %}
+
+    </div>
+  </div>
+{% endblock %}

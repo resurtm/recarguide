@@ -1,0 +1,20 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$e2xuuqLtI1Qv$1r5EZDxaqLvlqkHkuKbZJFcinXjngtAxmFbNL1hPpvs=",
+      "last_login": "2017-10-12T14:51:56.829Z",
+      "is_superuser": true,
+      "username": "resurtm",
+      "first_name": "",
+      "last_name": "",
+      "email": "resurtm@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2017-10-12T14:36:17.672Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

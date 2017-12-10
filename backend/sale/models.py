@@ -4,6 +4,9 @@ from django.db import transaction
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
+from cars.search.elastic import reindex_car
+from common.countries import get_country_by_code
+
 CONTACT_METHODS = (
     ('e', 'Email Only'),
     ('p', 'Email & Phone'),
@@ -81,9 +84,8 @@ class Contact(models.Model):
 
     @property
     def location_name(self):
-        return ''
-        # country = get_country_by_code(self.country)
-        # return '{}, {}'.format(self.city, country[1])
+        country = get_country_by_code(self.country)
+        return '{}, {}'.format(self.city, country[1])
 
 
 def pre_save_package_plan_receiver(instance, *args, **kwargs):

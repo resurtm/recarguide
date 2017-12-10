@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from common import views
+from recarguide.common import views
 
 app_name = 'common'
 

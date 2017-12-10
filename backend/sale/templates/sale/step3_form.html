@@ -1,0 +1,104 @@
+{% load widget_tweaks %}
+
+<form action="{% url 'sale:step3' %}" method="post" id="listing-contact-form">
+  {% csrf_token %}
+
+  {% with WIDGET_ERROR_CLASS='is-invalid' %}
+
+    <div class="row">
+      <label for="" class="col-sm-3 col-form-label">Full Name</label>
+
+      <div class="form-group col-sm-4">
+        <label for="{{ form.first_name.auto_id }}" class="col-form-label">{{ form.first_name.label }}</label>
+        {% render_field form.first_name class+='form-control' placeholder='John' %}
+        {% include 'partials/field_errors.html' with errors=form.first_name.errors %}
+      </div>
+
+      <div class="form-group col-sm-4">
+        <label for="{{ form.last_name.auto_id }}" class="col-form-label">{{ form.last_name.label }}</label>
+        {% render_field form.last_name class+='form-control' placeholder='Doe' %}
+        {% include 'partials/field_errors.html' with errors=form.last_name.errors %}
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="{{ form.address.auto_id }}" class="col-sm-3 col-form-label">{{ form.address.label }}</label>
+      <div class="col-sm-8">
+        {% render_field form.address class+='form-control' placeholder='1451 W Broadway St' %}
+        {% include 'partials/field_errors.html' with errors=form.address.errors %}
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="{{ form.address2.auto_id }}" class="col-sm-3 col-form-label">{{ form.address2.label }}</label>
+      <div class="col-sm-8">
+        {% render_field form.address2 class+='form-control' placeholder='315 Hansen Ave' %}
+        {% include 'partials/field_errors.html' with errors=form.address2.errors %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3"></div>
+
+      <div class="form-group col-sm-3">
+        <label for="{{ form.city.auto_id }}" class="col-form-label">{{ form.city.label }}</label>
+        {% render_field form.city class+='form-control' placeholder='New York' %}
+        {% include 'partials/field_errors.html' with errors=form.city.errors %}
+      </div>
+
+      <div class="form-group col-sm-3">
+        <label for="{{ form.country.auto_id }}" class="col-form-label">{{ form.country.label }}</label>
+        {% render_field form.country class+='form-control' %}
+        {% include 'partials/field_errors.html' with errors=form.country.errors %}
+      </div>
+
+      <div class="form-group col-sm-2">
+        <label for="{{ form.zip.auto_id }}" class="col-form-label">{{ form.zip.label }}</label>
+        {% render_field form.zip class+='form-control' placeholder='123456' %}
+        {% include 'partials/field_errors.html' with errors=form.zip.errors %}
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="{{ form.phone.auto_id }}" class="col-sm-3 col-form-label">{{ form.phone.label }}</label>
+      <div class="col-sm-6">
+        {% render_field form.phone class+='form-control' placeholder='+1234567890' %}
+        {% include 'partials/field_errors.html' with errors=form.phone.errors %}
+      </div>
+    </div>
+
+    <hr class="mt-4 mb-4">
+
+    <div class="row">
+      <label for="{{ form.contact_method.auto_id }}" class="col-sm-3 col-form-label">
+        {{ form.contact_method.label }}
+      </label>
+
+      <div class="col-sm-8">
+        <div class="form-check mb-4">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="{{ form.contact_method.name }}"
+                   id="{{ form.contact_method.auto_id }}_e"
+                   value="e" {% if form.contact_method.initial == 'e' %}checked{% endif %}>
+            <strong>Email Only</strong> (Recommended)<br>
+            Buyers will contact you via contact form.<br>
+            Your email address will be hidden.
+          </label>
+        </div>
+
+        <div class="form-check mt-4">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="{{ form.contact_method.name }}"
+                   id="{{ form.contact_method.auto_id }}_p"
+                   value="p" {% if form.contact_method.initial == 'p' %}checked{% endif %}>
+            <strong>Email and Phone</strong><br>
+            Buyers will contact you via contact form.<br>
+            In addition, your phone number will be displayed on your ad.
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {% include 'sale/form_actions.html' %}
+
+  {% endwith %}
+</form>

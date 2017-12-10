@@ -115,8 +115,5 @@ STATIC_URL = '/static/'
 
 CELERY_BROKER_URL = 'amqp://rabuser:rabpass@rabbit:5672/recarguide'
 
-# resurtm+recarguide@gmail.com
-STRIPE = {
-    'PUBLISHABLE_KEY': secrets['stripe']['publishable_key'],
-    'SECRET_KEY': secrets['stripe']['secret_key'],
-}
+STRIPE = secrets['stripe']
+AWS_S3 = secrets['aws_s3']

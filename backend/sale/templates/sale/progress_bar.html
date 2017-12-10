@@ -1,0 +1,61 @@
+<div id="progress-bar" class="mb-4">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Step #{{ step }}</h4>
+
+      {% if step == 1 %}
+        <h6 class="card-subtitle mb-2 text-muted">Select an appropriate package plan</h6>
+        <p class="card-text">Please make a choose of the plan which would fit the best to your listing</p>
+      {% endif %}
+
+      {% if step == 2 %}
+        <h6 class="card-subtitle mb-2 text-muted">Fill details about your car</h6>
+        <p class="card-text">Make sure you have specified as much as possible and precise details</p>
+      {% endif %}
+
+      {% if step == 3 %}
+        <h6 class="card-subtitle mb-2 text-muted">Location &amp; contact data</h6>
+        <p class="card-text">Your potential buyers should know how to contact with you and where
+          your car is located at</p>
+      {% endif %}
+
+      {% if step == 4 %}
+        <h6 class="card-subtitle mb-2 text-muted">Make your payment now</h6>
+        <p class="card-text">Please make a payment for your listing in order to publish it</p>
+      {% endif %}
+
+      {% if step == 5 %}
+        <h6 class="card-subtitle mb-2 text-muted">Woo-hoo!</h6>
+        <p class="card-text">Your listing has been successfully published! ;-)</p>
+      {% endif %}
+
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped" role="progressbar"
+             style="width: {{ bar_percent }}%;" aria-valuenow="{{ bar_percent }}" aria-valuemin="0"
+             aria-valuemax="100">
+          <strong>Step #{{ step }} &mdash; {{ bar_percent }}%</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav aria-label="Sale Steps Pagination" class="my-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="{% url 'sale:step1' %}">Step #1</a>
+      </li>
+      <li class="page-item {% if step < 2 %}disabled{% endif %}">
+        <a class="page-link" href="{% url 'sale:step2' %}">Step #2</a>
+      </li>
+      <li class="page-item {% if step < 3 %}disabled{% endif %}">
+        <a class="page-link" href="{% url 'sale:step3' %}">Step #3</a>
+      </li>
+      <li class="page-item {% if step < 4 %}disabled{% endif %}">
+        <a class="page-link" href="{% url 'sale:step4' %}">Step #4</a>
+      </li>
+      <li class="page-item {% if step < 5 %}disabled{% endif %}">
+        <a class="page-link" href="{% url 'sale:step5' %}">Step #5</a>
+      </li>
+    </ul>
+  </nav>
+</div>

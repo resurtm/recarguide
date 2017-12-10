@@ -1,0 +1,9 @@
+{% extends 'common/layout/main.html' %}
+
+{% load breadcrumbs %}
+
+{% block content %}
+    {% breadcrumb 'Home' 'common:home' %}
+    {% breadcrumb 'Cabinet' 'cabinet:index' %}
+    {% breadcrumbs %}
+{% endblock %}
