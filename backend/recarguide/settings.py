@@ -121,3 +121,9 @@ ELASTICSEARCH_DSN = 'http://elastic:changeme@elastic:9200/'
 
 STRIPE = secrets['stripe']
 AWS_S3 = secrets['aws_s3']
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'email-smtp.{}.amazonaws.com'.format(secrets['aws_ses']['region'])
+EMAIL_HOST_USER = secrets['aws_ses']['smtp_username']
+EMAIL_HOST_PASSWORD = secrets['aws_ses']['smtp_password']
+EMAIL_PORT = 587

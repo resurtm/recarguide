@@ -1,0 +1,5 @@
+{% extends 'common/layout/mail.html' %}
+
+{% block body %}
+  <h1>ReCarGuide — verify your email</h1>
+{% endblock %}

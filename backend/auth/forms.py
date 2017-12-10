@@ -2,6 +2,8 @@ from django.contrib.auth import forms
 from django.contrib.auth.models import User
 from django.forms import EmailField, EmailInput
 
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
 class AuthenticationForm(forms.AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -49,9 +51,23 @@ class UserCreationForm(forms.UserCreationForm):
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
+        user.is_active = False
         if commit:
             user.save()
+        self.__send_signup_email(user)
         return user
+
+    def __send_signup_email(self, user):
+        html = render_to_string('registration/signup_email.html', {
+            'user': user,
+        })
+        send_mail(
+            'ReCarGuide — verify your email',
+            html,
+            'resurtm@gmail.com',
+            [user.email],
+            fail_silently=False,
+        )
 
     def __adjust_username_field(self):
         old_attrs = self.fields['username'].widget.attrs
